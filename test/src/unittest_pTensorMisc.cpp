@@ -304,5 +304,21 @@ TEST_F(pTensor_TensorMisc, TestRandomUniform) {
     // This test is a little fickle but we basically generate a gigantic
     // pTensor and then average and check if we are within some tolerance
     // to the expected value
+    double low = 0.0;
+    double high = 1.0;
+    int size = 10000; // 10K
+    pTensor pt = pTensor::randomUniform(size, size, low, high);
+    double expectedMean = 0.5 * (low + high);
+
+    double actualMean = 0.0;
+    for (auto &vec: pt.getMessage()){
+        for (auto &scalar: vec){
+            actualMean += scalar.real();
+        }
+    }
+    actualMean /= (size * size);
+
+    EXPECT_NEAR(expectedMean, actualMean, 0.001);
+
 
 }
