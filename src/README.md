@@ -1,12 +1,15 @@
 # TODO
 
--[X] Add a loader for real numbers
+-[ ] Integration of logging via spdlog
 
--[X] Add a flag for optional storage of transposes
+-[ ] Utility functions:
 
--[X] finish up implementation of transpose
-
--[ ] figure out logging 
-
--[X] Finish testing
-
+    -[ ] Enabling shuffling (we encode feature-wise instead of row-wise so standard shuffling is not as easy)
+     
+    -[ ] Reshape
+     
+    -[ ] hstack
+     
+    -[ ] vstack
+     
+    -[ ] outer product

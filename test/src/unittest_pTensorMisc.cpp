@@ -201,7 +201,6 @@ TEST_F(pTensor_TensorMisc, TestDotVectorVector) {
             expectedRowForm)
     );
 }
-
 TEST_F(pTensor_TensorMisc, TestTransposeEnc){
 
     messageTensor expectedTensorTranspose = {
@@ -237,7 +236,6 @@ TEST_F(pTensor_TensorMisc, TestTransposeEnc){
     );
 
 }
-
 TEST_F(pTensor_TensorMisc, DISABLED_TestSum) {
     /////////////////////////////////////////////////////////////////
     //We need to up the parameters here so we do it locally.
@@ -282,4 +280,45 @@ TEST_F(pTensor_TensorMisc, DISABLED_TestSum) {
     messageTensor expected1 = {{6}, {15}};
     resp = axis1.decrypt();
     EXPECT_TRUE(messageTensorEq(resp.getMessage(), expected1));
+}
+
+TEST_F(pTensor_TensorMisc, TestIdentity) {
+    pTensor pt = pTensor::identity(2);
+
+    auto ptShape = pt.shape();
+    int expectedRows = 2;
+    int expectedCols = 2;
+    unsigned int actualRows = std::get<0>(ptShape);
+    unsigned int actualCols = std::get<1>(ptShape);
+    EXPECT_EQ(expectedRows, actualRows);
+    EXPECT_EQ(expectedCols, actualCols);
+
+    auto msg = pt.getMessage();
+    EXPECT_EQ(msg[0][0].real(), 1);
+    EXPECT_EQ(msg[0][1].real(), 0);
+    EXPECT_EQ(msg[1][0].real(), 0);
+    EXPECT_EQ(msg[1][1].real(), 1);
+
+}
+TEST_F(pTensor_TensorMisc, TestRandomUniform) {
+    // This test is a little fickle but we basically generate a gigantic
+    // pTensor and then average and check if we are within some tolerance
+    // to the expected value
+    double low = 0.0;
+    double high = 1.0;
+    int size = 10000; // 10K
+    pTensor pt = pTensor::randomUniform(size, size, low, high);
+    double expectedMean = 0.5 * (low + high);
+
+    double actualMean = 0.0;
+    for (auto &vec: pt.getMessage()){
+        for (auto &scalar: vec){
+            actualMean += scalar.real();
+        }
+    }
+    actualMean /= (size * size);
+
+    EXPECT_NEAR(expectedMean, actualMean, 0.001);
+
+
 }

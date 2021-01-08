@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.5.1)
 
 project(palisade_tutorial CXX)
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
 # Setup code coverage
 link_libraries(gcov)
 set(CMAKE_EXE_LINKER_FLAGS "")
