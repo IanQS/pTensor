@@ -297,7 +297,7 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     cipherTensor rowAccumulatorAsTensor;
     rowAccumulatorAsTensor.emplace_back(rowAccumulator);
 
-    if (asRowVector){
+    if (asRowVector) {
         pTensor newTensor(1, m_rows, rowAccumulatorAsTensor, colAccumulator);
         newTensor.m_isEncrypted = m_isEncrypted;
         newTensor.m_cc = m_cc;
@@ -466,7 +466,7 @@ pTensor pTensor::identity(unsigned int n, bool encrypted) {
     }
 
     pTensor newTensor(n, n, message);
-    if (encrypted){
+    if (encrypted) {
         auto encryptedTensor = newTensor.encrypt();
         return encryptedTensor;
     }
@@ -486,7 +486,7 @@ pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low,
         tensorContainer.emplace_back(vectorContainer);
     }
     pTensor newTensor(rows, cols, tensorContainer);
-    if (encrypted){
+    if (encrypted) {
         auto encryptedTensor = newTensor.encrypt();
         return encryptedTensor;
     }
@@ -509,5 +509,38 @@ pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int
         auto encryptedTensor = newTensor.encrypt();
         return encryptedTensor;
     }
+    return newTensor;
+}
+pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
+    // need to verify that we have something to concatenate
+    assert(
+        (arg1.messageNotEmpty() && arg2.messageNotEmpty()) ||
+            (arg1.cipherNotEmpty() && arg2.cipherNotEmpty())
+    );
+    assert(arg1.m_cols == arg2.m_cols);
+
+    if (arg1.messageNotEmpty()) {
+        messageTensor container = arg1.m_messages;
+        for (auto &vec: arg2.m_messages) {
+            container.emplace_back(vec);
+        }
+
+        pTensor newTensor(arg1.m_rows + arg2.m_rows, arg1.m_cols, container);
+
+        newTensor.m_cc = arg1.m_cc;
+        newTensor.m_public_key = arg1.m_public_key;
+        newTensor.m_private_key = arg1.m_private_key;
+        return newTensor;
+    }
+    cipherTensor container = arg1.m_ciphertexts;
+    for (auto &v: arg2.m_ciphertexts) {
+        container.emplace_back(v);
+    }
+
+    pTensor newTensor(arg1.m_rows + arg2.m_rows, arg1.m_cols, container);
+
+    newTensor.m_cc = arg1.m_cc;
+    newTensor.m_public_key = arg1.m_public_key;
+    newTensor.m_private_key = arg1.m_private_key;
     return newTensor;
 }

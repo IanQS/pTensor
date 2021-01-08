@@ -201,7 +201,7 @@ TEST_F(pTensor_TensorMisc, TestDotVectorVector) {
             expectedRowForm)
     );
 }
-TEST_F(pTensor_TensorMisc, TestTransposeEnc){
+TEST_F(pTensor_TensorMisc, TestTransposeEnc) {
 
     messageTensor expectedTensorTranspose = {
         {1, 4},
@@ -311,14 +311,13 @@ TEST_F(pTensor_TensorMisc, TestRandomUniform) {
     double expectedMean = 0.5 * (low + high);
 
     double actualMean = 0.0;
-    for (auto &vec: pt.getMessage()){
-        for (auto &scalar: vec){
+    for (auto &vec: pt.getMessage()) {
+        for (auto &scalar: vec) {
             actualMean += scalar.real();
         }
     }
     actualMean /= (size * size);
 
     EXPECT_NEAR(expectedMean, actualMean, 0.001);
-
 
 }

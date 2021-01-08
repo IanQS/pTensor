@@ -49,7 +49,7 @@ link_libraries(${PALISADE_LIBRARIES})
 
 
 # Actual execution
-add_executable(palisade_ML main.cpp src/p_tensor.h src/ptensor_utils.h src/p_tensor.cpp)
+add_executable(palisade_ML main.cpp src/p_tensor.h src/ptensor_utils.h src/p_tensor.cpp src/datasetProvider.cpp src/datasetProvider.h)
 add_executable(palisade_ML_test test/src/unittest_pTensorTensorX.cpp src/p_tensor.h src/ptensor_utils.h src/p_tensor.cpp test/src/unittest_pTensorVectorX.cpp test/src/unittest_pTensorScalarX.cpp test/src/unittest_pTensorMisc.cpp)
 target_link_libraries(palisade_ML spdlog::spdlog)
 #Link with GoogleTest
