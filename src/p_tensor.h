@@ -133,7 +133,7 @@ class pTensor {
  * @param complexTensor the raw message to store
 * @param precomputeTranspose whether to encrypt the transpose of this pTensor in addition to the actual value.
  */
-  pTensor(unsigned int rows, unsigned int cols, messageTensor &complexTensor, bool summaryStats = false);
+  pTensor(unsigned int rows, unsigned int cols, messageTensor &complexTensor):m_rows(rows), m_cols(cols), m_messages(complexTensor){}
 
 //  /**
 //* Instantiate the object directly from a raw real message matrix

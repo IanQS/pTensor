@@ -283,6 +283,21 @@ TEST_F(pTensor_TensorMisc, DISABLED_TestSum) {
 }
 
 TEST_F(pTensor_TensorMisc, TestIdentity) {
+    pTensor pt = pTensor::identity(2);
+
+    auto ptShape = pt.shape();
+    int expectedRows = 2;
+    int expectedCols = 2;
+    unsigned int actualRows = std::get<0>(ptShape);
+    unsigned int actualCols = std::get<1>(ptShape);
+    EXPECT_EQ(expectedRows, actualRows);
+    EXPECT_EQ(expectedCols, actualCols);
+
+    auto msg = pt.getMessage();
+    EXPECT_EQ(msg[0][0].real(), 1);
+    EXPECT_EQ(msg[0][1].real(), 0);
+    EXPECT_EQ(msg[1][0].real(), 0);
+    EXPECT_EQ(msg[1][1].real(), 1);
 
 }
 TEST_F(pTensor_TensorMisc, TestRandomUniform) {
