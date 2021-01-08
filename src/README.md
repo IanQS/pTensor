@@ -1,7 +1,5 @@
 # TODO
 
-- [ ] Test identity, random uniform and random normal
-
 -[ ] Integration of logging via spdlog
 
 -[ ] Utility functions:
