@@ -201,7 +201,6 @@ TEST_F(pTensor_TensorMisc, TestDotVectorVector) {
             expectedRowForm)
     );
 }
-
 TEST_F(pTensor_TensorMisc, TestTransposeEnc){
 
     messageTensor expectedTensorTranspose = {
@@ -237,7 +236,6 @@ TEST_F(pTensor_TensorMisc, TestTransposeEnc){
     );
 
 }
-
 TEST_F(pTensor_TensorMisc, DISABLED_TestSum) {
     /////////////////////////////////////////////////////////////////
     //We need to up the parameters here so we do it locally.
@@ -282,4 +280,14 @@ TEST_F(pTensor_TensorMisc, DISABLED_TestSum) {
     messageTensor expected1 = {{6}, {15}};
     resp = axis1.decrypt();
     EXPECT_TRUE(messageTensorEq(resp.getMessage(), expected1));
+}
+
+TEST_F(pTensor_TensorMisc, TestIdentity) {
+
+}
+TEST_F(pTensor_TensorMisc, TestRandomUniform) {
+    // This test is a little fickle but we basically generate a gigantic
+    // pTensor and then average and check if we are within some tolerance
+    // to the expected value
+
 }

@@ -32,6 +32,7 @@
 #include <complex>
 #include "ptensor_utils.h"
 #include <cassert>
+#include <random>
 
 /**
  * Main Palisade Tensor class
@@ -44,12 +45,9 @@ using messageScalar = std::complex<double>;
 using messageVector = std::vector<messageScalar>;
 using messageTensor = std::vector<messageVector>;
 
-// Utilities for creating directly from real numbers. My IDE screams a me otherwise.
-using realMessageScalar = double;
-using realMessageVector = std::vector<realMessageScalar>;
-using realMessageTensor = std::vector<realMessageVector>;
 
-using palisadeBinaryOp = cipherVector (*)(cipherVector left, cipherVector right);
+using realScalar = double;
+using realVector = std::vector<realScalar>;
 
 class pTensor {
  public:
@@ -59,9 +57,6 @@ class pTensor {
   shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> m_private_key = nullptr;
 
   pTensor()= default;
-
-  pTensor(int rows, int cols, bool isEncrypted = false) :
-      m_rows(rows), m_cols(cols), m_isEncrypted(isEncrypted) {};
 
   /////////////////////////////////////////////////////////////////
   //Initialize from a transpose
@@ -124,7 +119,7 @@ class pTensor {
   //Destructor
   /////////////////////////////////////////////////////////////////
 
-  ~pTensor(){}
+  ~pTensor()= default;
 
   /////////////////////////////////////////////////////////////////
   // Initialization from messages
@@ -138,13 +133,7 @@ class pTensor {
  * @param complexTensor the raw message to store
 * @param precomputeTranspose whether to encrypt the transpose of this pTensor in addition to the actual value.
  */
-  pTensor(unsigned int rows, unsigned int cols, messageTensor &complexTensor) :
-      m_rows(rows),
-      m_cols(cols),
-      m_messages(complexTensor) {
-//      assert(rows == complexTensor.size());
-//      assert(cols == complexTensor[0].size());
-  };
+  pTensor(unsigned int rows, unsigned int cols, messageTensor &complexTensor, bool summaryStats = false);
 
 //  /**
 //* Instantiate the object directly from a raw real message matrix
@@ -335,6 +324,11 @@ class pTensor {
    */
   messageTensor plainT();
 
+  /**
+   * Static plaintext transpose
+   */
+   static messageTensor plainT(messageTensor message);
+
   void debugMessages() {
       for (auto &v: (m_messages)) {
           for (auto &s: v) {
@@ -352,6 +346,55 @@ class pTensor {
       return (!m_ciphertexts.empty());
   }
 
+  /**
+   * Generate the (n, n) identity matrix. We either return it in encrypted form or plaintext form
+   *    but it is trivial to encrypt via the utility function
+   * @param n
+   *    The size of the matrix
+   * @param encrypted
+   *    Flag to denote if it should be encrypted (default false)
+   * @return
+   */
+  static pTensor identity(unsigned int n, bool encrypted=false);
+
+  /**
+   * Generate a randomUniform tensor of (rows, cols) where each element is between [low, high)
+   *    The user can specify whether to encrypt the result.
+   *
+   *    Code based on https://cplusplus.com/reference/random/uniform_real_distribution/
+   * @param rows
+   *    Number of rows
+   * @param cols
+   *    number of cols
+   * @param low
+   *    minimum (inclusive) of the randomUniform values
+   * @param high
+   *    maximum (exclusive) of the randomUniform values
+   * @param encrypted
+   *    whether the result should be encrypted
+   * @return
+   */
+  static pTensor randomUniform(unsigned int rows, unsigned int cols, double low = 0.0, double high = 1.0, bool encrypted=false);
+
+  /**
+   * Generate a randomNormal distribution tensor of (rows, cols) where each element is between [low, high)
+   *    The user can specify whether to encrypt the result.
+   *
+   *    Answers based on
+   * @param rows
+   *    Number of rows
+   * @param cols
+   *    number of cols
+   * @param low
+   *    minimum (inclusive) of the random normal values
+   * @param high
+   *    maximum (exclusive) of the random normal values
+   * @param encrypted
+   *    whether the result should be encrypted
+   * @return
+   */
+  static pTensor randomNormal(unsigned int rows, unsigned int cols, int low = 0, int high = 1, bool encrypted = false);
+
   /////////////////////////////////////////////////////////////////
   //Getters
   /////////////////////////////////////////////////////////////////
@@ -360,11 +403,11 @@ class pTensor {
       return m_messages;
   }
 
-  bool isScalar() {
+  bool isScalar() const {
       return (m_rows == 1 && m_cols == 1);
   }
 
-  bool isVector(){
+  bool isVector() const{
       bool rowVec = (m_rows == 1 && m_cols != 1);
       bool colVec = (m_rows != 1 && m_cols == 1);
       return (rowVec || colVec);
@@ -414,9 +457,6 @@ class pTensor {
   cipherTensor m_ciphertexts;
   cipherTensor m_TCiphertexts; // the encrypted transpose.
   bool m_isRepeated = false;  // Only used for scalar stuff. We record if they have been repeated (into a vector)
-
-
-
 
 };
 

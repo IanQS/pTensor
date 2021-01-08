@@ -447,3 +447,67 @@ messageTensor pTensor::plainT() {
     }
     return transposeTensor;
 }
+
+messageTensor pTensor::plainT(messageTensor tensor) {
+    messageTensor transposeTensor;
+
+    for (unsigned int i = 0; i < tensor.size(); i++) {
+        for (unsigned int j = 0; j < tensor[0].size(); j++) {
+            transposeTensor[j].emplace_back(tensor[i][j]);
+        }
+    }
+    return transposeTensor;
+}
+
+pTensor pTensor::identity(unsigned int n, bool encrypted) {
+    messageTensor message(n, messageVector(n, 0));
+    for (unsigned int i = 0; i < n; ++i) {
+        message[i][i] = 1;
+    }
+
+    pTensor newTensor(n, n, message);
+    if (encrypted){
+        auto encryptedTensor = newTensor.encrypt();
+        return encryptedTensor;
+    }
+    return newTensor;
+}
+pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low, double high, bool encrypted) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(low, high);
+
+    messageTensor tensorContainer;
+    for (unsigned int r = 0; r < rows; ++r) {
+        messageVector vectorContainer;
+        for (unsigned int c = 0; c < cols; ++c) {
+            vectorContainer.emplace_back(distribution(generator));
+        }
+        tensorContainer.emplace_back(vectorContainer);
+    }
+    pTensor newTensor(rows, cols, tensorContainer);
+    if (encrypted){
+        auto encryptedTensor = newTensor.encrypt();
+        return encryptedTensor;
+    }
+    return newTensor;
+}
+pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int high, bool encrypted) {
+    std::default_random_engine generator;
+    std::normal_distribution<double> distribution(low, high);
+
+    messageTensor tensorContainer;
+    for (unsigned int r = 0; r < rows; ++r) {
+        messageVector vectorContainer;
+        for (unsigned int c = 0; c < cols; ++c) {
+            vectorContainer.emplace_back(distribution(generator));
+        }
+        tensorContainer.emplace_back(vectorContainer);
+    }
+    pTensor newTensor(rows, cols, tensorContainer);
+    if (encrypted) {
+        auto encryptedTensor = newTensor.encrypt();
+        return encryptedTensor;
+    }
+    return newTensor;
+}
