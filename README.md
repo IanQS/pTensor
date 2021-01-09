@@ -40,3 +40,13 @@ a [numpy-like](https://numpy.org/) interface for use in encrypted machine learni
 - Random tensor
     - uniform
     - normal
+  
+- shuffling
+  - this is comprised of 2 parts: shuffling n number of (user specified) folds if given messages, then having an adapter that feeds the data.
+  
+- hstack
+  - re: expensive transpose, we do a vstack on the transpose to get the resulting transpose without actually doing the entire thing
+
+- vstack
+  - re: expensive transpose, we do a hstack on the transpose to get the resulting transpose without actually doing the
+    entire thing

@@ -45,7 +45,6 @@ using messageScalar = std::complex<double>;
 using messageVector = std::vector<messageScalar>;
 using messageTensor = std::vector<messageVector>;
 
-
 using realScalar = double;
 using realVector = std::vector<realScalar>;
 
@@ -56,7 +55,7 @@ class pTensor {
   shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> m_public_key = nullptr;
   shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> m_private_key = nullptr;
 
-  pTensor()= default;
+  pTensor() = default;
 
   /////////////////////////////////////////////////////////////////
   //Initialize from a transpose
@@ -87,7 +86,7 @@ class pTensor {
 
           // If we trust that the user has put in the cipher and transpose correctly, we can check the following too
           assert(cTensor.size() == 1);  // Rows must be 0.
-          assert(cTensorTranspose.size()==1);
+          assert(cTensorTranspose.size() == 1);
       }
   };
 
@@ -109,9 +108,10 @@ class pTensor {
       m_isEncrypted(true),
       m_ciphertexts(cipherTensor),
       m_isRepeated(isRepeated) {
-      if (isRepeated){
+      if (isRepeated) {
           assert(rows == cols && cols == 1);
-          assert(m_ciphertexts.size() ==1);  // We cannot check the cols as they are encrypted and have to take this on good faith.
+          assert(m_ciphertexts.size()
+                     == 1);  // We cannot check the cols as they are encrypted and have to take this on good faith.
       }
   };
 
@@ -119,7 +119,7 @@ class pTensor {
   //Destructor
   /////////////////////////////////////////////////////////////////
 
-  ~pTensor()= default;
+  ~pTensor() = default;
 
   /////////////////////////////////////////////////////////////////
   // Initialization from messages
@@ -133,23 +133,8 @@ class pTensor {
  * @param complexTensor the raw message to store
 * @param precomputeTranspose whether to encrypt the transpose of this pTensor in addition to the actual value.
  */
-  pTensor(unsigned int rows, unsigned int cols, messageTensor &complexTensor):m_rows(rows), m_cols(cols), m_messages(complexTensor){}
-
-//  /**
-//* Instantiate the object directly from a raw real message matrix
-//* @param rows number of rows
-//* @param cols number of cols. Only used in the decryption process
-//* @param realTensor the raw message to store
-//* @param precomputeTranspose whether to encrypt the transpose of this pTensor in addition to the actual value.
-//*/
-//  pTensor(int rows, int cols, realMessageTensor &realTensor) :
-//      m_rows(rows),
-//      m_cols(cols),
-//      m_isEncrypted(false),
-//      m_messages(realTensor.begin(), realTensor.end())
-//      {
-//  }
-
+  pTensor(unsigned int rows, unsigned int cols, messageTensor &complexTensor)
+      : m_rows(rows), m_cols(cols), m_messages(complexTensor) {}
 
   /////////////////////////////////////////////////////////////////
   //Implementations
@@ -158,7 +143,7 @@ class pTensor {
   /**
    * Return the shape of the matrix.
    */
-  std::tuple<int, int> shape() const { return std::make_tuple(m_rows, m_cols); };
+  std::tuple<unsigned int, unsigned int> shape() const { return std::make_tuple(m_rows, m_cols); };
 
   // Misc. Functions
   // Note, we only need to know if something is a scalar or not so we can broadcast it.
@@ -327,8 +312,12 @@ class pTensor {
   /**
    * Static plaintext transpose
    */
-   static messageTensor plainT(messageTensor message);
+  static messageTensor plainT(messageTensor message);
 
+  /**
+   * Debug the messages from an UNENCRYPTED matrix. this is unrealistic and will not be available for general purposes as we
+   * would need the secret key
+   */
   void debugMessages() {
       for (auto &v: (m_messages)) {
           for (auto &s: v) {
@@ -338,10 +327,18 @@ class pTensor {
       }
   };
 
+  /**
+   * Check if the message is non-empty
+   * @return
+   */
   bool messageNotEmpty() {
       return (!m_messages.empty());
   }
 
+  /**
+   * Check if the cipher is non-empty
+   * @return
+   */
   bool cipherNotEmpty() {
       return (!m_ciphertexts.empty());
   }
@@ -355,7 +352,7 @@ class pTensor {
    *    Flag to denote if it should be encrypted (default false)
    * @return
    */
-  static pTensor identity(unsigned int n, bool encrypted=false);
+  static pTensor identity(unsigned int n, bool encrypted = false);
 
   /**
    * Generate a randomUniform tensor of (rows, cols) where each element is between [low, high)
@@ -374,7 +371,11 @@ class pTensor {
    *    whether the result should be encrypted
    * @return
    */
-  static pTensor randomUniform(unsigned int rows, unsigned int cols, double low = 0.0, double high = 1.0, bool encrypted=false);
+  static pTensor randomUniform(unsigned int rows,
+                               unsigned int cols,
+                               double low = 0.0,
+                               double high = 1.0,
+                               bool encrypted = false);
 
   /**
    * Generate a randomNormal distribution tensor of (rows, cols) where each element is between [low, high)
@@ -395,22 +396,50 @@ class pTensor {
    */
   static pTensor randomNormal(unsigned int rows, unsigned int cols, int low = 0, int high = 1, bool encrypted = false);
 
+  /**
+   * Vertically stack the tensors.
+   * @param arg1
+   * @param arg2
+   * @return
+   */
+  static pTensor hstack(pTensor arg1, pTensor arg2);
+
   /////////////////////////////////////////////////////////////////
   //Getters
   /////////////////////////////////////////////////////////////////
 
+  /**
+   * Get the message
+   * @return
+   */
   messageTensor getMessage() {
       return m_messages;
   }
 
+  /**
+   * Check if the current pTensor is a scalar
+   * @return
+   */
   bool isScalar() const {
       return (m_rows == 1 && m_cols == 1);
   }
 
-  bool isVector() const{
+  /**
+   * Check if the current pTensor is a vector
+   * @return
+   */
+  bool isVector() const {
       bool rowVec = (m_rows == 1 && m_cols != 1);
       bool colVec = (m_rows != 1 && m_cols == 1);
       return (rowVec || colVec);
+  }
+
+  /**
+   * We only support up to matrices so we can just determine if it is a matrix by process of elimination
+   * @return
+   */
+  bool isMatrix() const {
+      return (!isVector() && !isScalar());
   }
 
  private:

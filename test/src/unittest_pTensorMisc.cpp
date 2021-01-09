@@ -201,7 +201,7 @@ TEST_F(pTensor_TensorMisc, TestDotVectorVector) {
             expectedRowForm)
     );
 }
-TEST_F(pTensor_TensorMisc, TestTransposeEnc){
+TEST_F(pTensor_TensorMisc, TestTransposeEnc) {
 
     messageTensor expectedTensorTranspose = {
         {1, 4},
@@ -311,14 +311,42 @@ TEST_F(pTensor_TensorMisc, TestRandomUniform) {
     double expectedMean = 0.5 * (low + high);
 
     double actualMean = 0.0;
-    for (auto &vec: pt.getMessage()){
-        for (auto &scalar: vec){
+    for (auto &vec: pt.getMessage()) {
+        for (auto &scalar: vec) {
             actualMean += scalar.real();
         }
     }
     actualMean /= (size * size);
 
     EXPECT_NEAR(expectedMean, actualMean, 0.001);
+}
+TEST_F(pTensor_TensorMisc, TestVStack) {
 
+    messageTensor expectedTV = {
+        {1, 2, 3},
+        {4, 5, 6},
+        {1, 2, 3},
+    };
 
+    messageTensor expectedVV = {
+        {1, 2, 3},
+        {1, 2, 3},
+    };
+
+    auto tensor = t1.encrypt();
+    auto vector = t2.encrypt();
+
+    auto respTensVec = pTensor::hstack(tensor, vector);
+    auto decryptedTV = respTensVec.decrypt();
+    EXPECT_TRUE(messageTensorEq(
+        decryptedTV.getMessage(),
+        expectedTV
+        ));
+
+    auto respVecVec = pTensor::hstack(vector, vector);
+    auto decryptedVV = respVecVec.decrypt();
+    EXPECT_TRUE(messageTensorEq(
+        decryptedVV.getMessage(),
+        expectedVV
+    ));
 }
