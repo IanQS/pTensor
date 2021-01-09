@@ -5,7 +5,7 @@
 #include "datasetProvider.h"
 
 int f() {
-    static int i = 1;
+    static int i = 0;
     return i++;
 }
 
@@ -79,7 +79,6 @@ providedDataset datasetProvider::provide(int randomState, bool encrypt) {
             );
 
         }
-
 
     }
     return container;

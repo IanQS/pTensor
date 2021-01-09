@@ -24,7 +24,7 @@ class datasetProvider {
    * @param y
    * @param numFolds
    */
-  datasetProvider(pTensor X, pTensor y, unsigned int numFolds){
+  datasetProvider(pTensor X, pTensor y, unsigned int numFolds) {
       // Check that X has in-the-clear message and is a matrix
       assert(X.messageNotEmpty());
       assert(X.isMatrix());
@@ -38,7 +38,6 @@ class datasetProvider {
       m_numFolds = numFolds;
   }
 
-
   /**
    *
    * @param numEpochs
@@ -46,7 +45,7 @@ class datasetProvider {
    * @param encrypt
    * @return
    */
-  providedDataset provide(int randomState=42, bool encrypt=false);
+  providedDataset provide(int randomState = 42, bool encrypt = false);
 
  private:
   pTensor m_X;

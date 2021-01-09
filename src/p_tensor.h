@@ -143,7 +143,7 @@ class pTensor {
   /**
    * Return the shape of the matrix.
    */
-  std::tuple<int, int> shape() const { return std::make_tuple(m_rows, m_cols); };
+  std::tuple<unsigned int, unsigned int> shape() const { return std::make_tuple(m_rows, m_cols); };
 
   // Misc. Functions
   // Note, we only need to know if something is a scalar or not so we can broadcast it.
