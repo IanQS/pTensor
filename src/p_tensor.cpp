@@ -459,21 +459,16 @@ messageTensor pTensor::plainT(messageTensor tensor) {
     return transposeTensor;
 }
 
-pTensor pTensor::identity(unsigned int n, bool encrypted) {
+pTensor pTensor::identity(unsigned int n) {
     messageTensor message(n, messageVector(n, 0));
     for (unsigned int i = 0; i < n; ++i) {
         message[i][i] = 1;
     }
 
     pTensor newTensor(n, n, message);
-    if (encrypted) {
-        auto encryptedTensor = newTensor.encrypt();
-        return encryptedTensor;
-    }
     return newTensor;
 }
-pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low, double high, bool encrypted) {
-
+pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low, double high) {
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(low, high);
 
@@ -486,13 +481,9 @@ pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low,
         tensorContainer.emplace_back(vectorContainer);
     }
     pTensor newTensor(rows, cols, tensorContainer);
-    if (encrypted) {
-        auto encryptedTensor = newTensor.encrypt();
-        return encryptedTensor;
-    }
     return newTensor;
 }
-pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int high, bool encrypted) {
+pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int high) {
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(low, high);
 
@@ -505,10 +496,6 @@ pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int
         tensorContainer.emplace_back(vectorContainer);
     }
     pTensor newTensor(rows, cols, tensorContainer);
-    if (encrypted) {
-        auto encryptedTensor = newTensor.encrypt();
-        return encryptedTensor;
-    }
     return newTensor;
 }
 pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
@@ -544,3 +531,39 @@ pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
     newTensor.m_private_key = arg1.m_private_key;
     return newTensor;
 }
+pTensor pTensor::generateWeights(unsigned int numFeatures,
+                                 unsigned int numRepeats,
+                                 const messageTensor &seed,
+                                 const std::string &randomInitializer) {
+    if (!seed.empty()) {
+        assert(seed.size() == numFeatures);
+        messageTensor repeatedWeights;
+        for (auto &vector: seed) {
+            assert(vector.size() == 1);
+            repeatedWeights.emplace_back(messageVector(numRepeats, vector[0]));
+        }
+        pTensor newTensor(numFeatures, 1, repeatedWeights);
+        return newTensor;
+    } else {
+        pTensor container;
+        if (randomInitializer == "uniform") {
+            container = randomUniform(numFeatures, 1);
+
+        } else if (randomInitializer == "normal") {
+            container = randomNormal(numFeatures, 1);
+
+        } else {
+            std::string errMsg = "Given unrecognized randomInitializer distribution: " + randomInitializer;
+            throw std::runtime_error(errMsg);
+        }
+
+        auto msg = container.getMessage();
+        messageTensor repeatedWeights;
+        for (auto &vec: msg) {
+            repeatedWeights.emplace_back(messageVector(numRepeats, vec[0]));
+        }
+        container.m_messages = repeatedWeights;
+        return container;
+    }
+}
+

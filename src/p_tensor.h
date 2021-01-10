@@ -352,7 +352,7 @@ class pTensor {
    *    Flag to denote if it should be encrypted (default false)
    * @return
    */
-  static pTensor identity(unsigned int n, bool encrypted = false);
+  static pTensor identity(unsigned int n);
 
   /**
    * Generate a randomUniform tensor of (rows, cols) where each element is between [low, high)
@@ -374,8 +374,7 @@ class pTensor {
   static pTensor randomUniform(unsigned int rows,
                                unsigned int cols,
                                double low = 0.0,
-                               double high = 1.0,
-                               bool encrypted = false);
+                               double high = 1.0);
 
   /**
    * Generate a randomNormal distribution tensor of (rows, cols) where each element is between [low, high)
@@ -394,7 +393,22 @@ class pTensor {
    *    whether the result should be encrypted
    * @return
    */
-  static pTensor randomNormal(unsigned int rows, unsigned int cols, int low = 0, int high = 1, bool encrypted = false);
+  static pTensor randomNormal(unsigned int rows, unsigned int cols, int low = 0, int high = 1);
+
+  /**
+   * Generate repeated weigts. Used for matrix-matrix dot product a la X.dot(weights). This is used because it is more
+   *    efficient to encrypt the data feature-wise (num features, num observations) since, in general, there are more observations than features.
+   * @param numFeatures
+   *    The number of features that exist
+   * @param numRepeats
+   *    The number of times to repeat the weights
+   * @param seed
+   *    If given, we use these values to seed our weights. I.e we do not generate random values that are repeated and we just repeat whatever was given
+   * @param randomInitializer
+   *    Generates the distribution
+   * @return
+   */
+  static pTensor generateWeights(unsigned int numFeatures, unsigned int numRepeats, const messageTensor& seed, const std::string& randomInitializer);
 
   /**
    * Vertically stack the tensors.
