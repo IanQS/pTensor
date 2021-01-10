@@ -1,0 +1,85 @@
+\hypertarget{classdataset_provider}{}\doxysection{dataset\+Provider Class Reference}
+\label{classdataset_provider}\index{datasetProvider@{datasetProvider}}
+
+
+{\ttfamily \#include $<$dataset\+Provider.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classdataset_provider_a3eb6e6b99fb9fd4351e35b6b65e1d4f2}{dataset\+Provider}} (\mbox{\hyperlink{classp_tensor}{p\+Tensor}} X, \mbox{\hyperlink{classp_tensor}{p\+Tensor}} y, unsigned int num\+Folds)
+\item 
+\mbox{\hyperlink{dataset_provider_8h_ad4de801d7c46080723f7e3dfb6b02f67}{provided\+Dataset}} \mbox{\hyperlink{classdataset_provider_aa6d29f7f874222d29c8ca82ac690e0a0}{provide}} (int random\+State=42, bool encrypt=false)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 18 of file dataset\+Provider.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classdataset_provider_a3eb6e6b99fb9fd4351e35b6b65e1d4f2}\label{classdataset_provider_a3eb6e6b99fb9fd4351e35b6b65e1d4f2}} 
+\index{datasetProvider@{datasetProvider}!datasetProvider@{datasetProvider}}
+\index{datasetProvider@{datasetProvider}!datasetProvider@{datasetProvider}}
+\doxysubsubsection{\texorpdfstring{datasetProvider()}{datasetProvider()}}
+{\footnotesize\ttfamily dataset\+Provider\+::dataset\+Provider (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}}}]{X,  }\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}}}]{y,  }\item[{unsigned int}]{num\+Folds }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Create an instance of the dataset provider. We require that X and y are in plaintext form so that we can store them as slices 
+\begin{DoxyParams}{Parameters}
+{\em X} & the feature matrix of shape (\#samples, \#features) \\
+\hline
+{\em y} & a vector of size (1, \#samples) \\
+\hline
+{\em num\+Folds} & The number of folds to generate. The result of our \char`\"{}provide\char`\"{} method will be of this size \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 28 of file dataset\+Provider.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classdataset_provider_a3eb6e6b99fb9fd4351e35b6b65e1d4f2_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classdataset_provider_aa6d29f7f874222d29c8ca82ac690e0a0}\label{classdataset_provider_aa6d29f7f874222d29c8ca82ac690e0a0}} 
+\index{datasetProvider@{datasetProvider}!provide@{provide}}
+\index{provide@{provide}!datasetProvider@{datasetProvider}}
+\doxysubsubsection{\texorpdfstring{provide()}{provide()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{dataset_provider_8h_ad4de801d7c46080723f7e3dfb6b02f67}{provided\+Dataset}} dataset\+Provider\+::provide (\begin{DoxyParamCaption}\item[{int}]{random\+State = {\ttfamily 42},  }\item[{bool}]{encrypt = {\ttfamily false} }\end{DoxyParamCaption})}
+
+Provide the shuffled dataset to be iterated over 
+\begin{DoxyParams}{Parameters}
+{\em random\+State} & The random seed to use when shuffling \\
+\hline
+{\em encrypt} & Whether to encrypt the results. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 33 of file dataset\+Provider.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classdataset_provider_aa6d29f7f874222d29c8ca82ac690e0a0_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{dataset_provider_8h}{dataset\+Provider.\+h}}\item 
+src/\mbox{\hyperlink{dataset_provider_8cpp}{dataset\+Provider.\+cpp}}\end{DoxyCompactItemize}
