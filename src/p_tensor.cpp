@@ -4,6 +4,10 @@
  */
 #include "p_tensor.h"
 
+lbcrypto::CryptoContext<lbcrypto::DCRTPoly> *pTensor::m_cc = nullptr;
+shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> pTensor::m_public_key = nullptr;
+shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> pTensor::m_private_key = nullptr;
+
 pTensor pTensor::encrypt() {
     assert(messageNotEmpty() && m_public_key != nullptr && m_cc != nullptr);
     cipherTensor ct;
@@ -25,11 +29,10 @@ pTensor pTensor::encrypt() {
     }
 
     pTensor newTensor(m_rows, m_cols, ct, ctT);
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
+    newTensor.m_isEncrypted = true;
     return newTensor;
 }
+
 pTensor pTensor::decrypt() {
     assert(cipherNotEmpty() && m_private_key != nullptr && m_cc != nullptr);
     messageTensor mt;
@@ -37,9 +40,9 @@ pTensor pTensor::decrypt() {
     for (auto &vec: m_ciphertexts) {
         (*m_cc)->Decrypt(m_private_key, vec, &pt); // pt now contains the decrypted val
         unsigned int numCols;
-        if (m_isRepeated){
+        if (m_isRepeated) {
             numCols = 1;
-        } else{
+        } else {
             numCols = m_cols;
         }
         pt->SetLength(numCols);
@@ -47,12 +50,9 @@ pTensor pTensor::decrypt() {
     }
 
     pTensor newTensor(m_rows, m_cols, mt);
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
-
+// Cipher-Cipher
 cipherVector pTensor::applyBinaryOp(const char *opFlag, const cipherVector &a1, const cipherVector &a2) const {
     cipherVector op_res;
     if (std::strcmp(opFlag, "add") == 0) {
@@ -65,6 +65,7 @@ cipherVector pTensor::applyBinaryOp(const char *opFlag, const cipherVector &a1, 
     }
     return op_res;
 }
+//Cipher-plaintext
 cipherVector pTensor::applyBinaryOp(const char *opFlag, const cipherVector &a1, const lbcrypto::Plaintext &a2) const {
     cipherVector op_res;
     if (std::strcmp(opFlag, "add") == 0) {
@@ -99,6 +100,7 @@ cipherTensor pTensor::binaryOpAbstraction(const char *flag,
         }
         if (other.m_isEncrypted) {
             cipherVector otherVec;
+
             // If it is a scalar that has not been repeated, we repeat it.
             if (other.isScalar() && !(other.m_isRepeated)) {
 
@@ -141,9 +143,6 @@ pTensor pTensor::operator+(pTensor &other) {
         resRows, resCols, ciphertextContainer
     ); // Numpy requires that the output is the max of both
     newTensor.m_isEncrypted = m_isEncrypted;
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
 pTensor pTensor::operator+(messageTensor &other) {
@@ -180,9 +179,6 @@ pTensor pTensor::operator-(pTensor &other) {
         resRows, resCols, ciphertextContainer
     ); // Numpy requires that the output is the max of both
     newTensor.m_isEncrypted = m_isEncrypted;
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
 pTensor pTensor::operator-(messageTensor &other) {
@@ -220,9 +216,6 @@ pTensor pTensor::operator*(pTensor &other) {
         resRows, resCols, ciphertextContainer
     ); // Numpy requires that the output is the max of both
     newTensor.m_isEncrypted = m_isEncrypted;
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
 pTensor pTensor::operator*(messageTensor &other) {
@@ -259,7 +252,7 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     assert (m_cc != nullptr && (cipherNotEmpty())
                 && (other.messageNotEmpty() || other.cipherNotEmpty()));
 
-    if (isMatrix() && other.isMatrix()){
+    if (isMatrix() && other.isMatrix()) {
         // First do a hadamard prod
         auto elementWiseProd = (*this) * other;
         auto summed = elementWiseProd.sum(0);
@@ -284,7 +277,6 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     cipherVector mask = (*m_cc)->Encrypt(
         m_public_key,
         (*m_cc)->MakeCKKSPackedPlaintext(_mask));
-
 
     int HARDCODED_INDEX_FOR_OTHER_VECTOR = 0;
     cipherTensor colAccumulator;
@@ -313,16 +305,10 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     if (asRowVector) {
         pTensor newTensor(1, m_rows, rowAccumulatorAsTensor, colAccumulator);
         newTensor.m_isEncrypted = m_isEncrypted;
-        newTensor.m_cc = m_cc;
-        newTensor.m_public_key = m_public_key;
-        newTensor.m_private_key = m_private_key;
         return newTensor;
     }
     pTensor newTensor(m_rows, 1, colAccumulator, rowAccumulatorAsTensor);
     newTensor.m_isEncrypted = m_isEncrypted;
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
 
@@ -346,9 +332,6 @@ pTensor pTensor::sum() {
 
     pTensor newTensor(1, 1, asTensor);
     newTensor.m_isEncrypted = m_isEncrypted;
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
 
@@ -373,9 +356,6 @@ pTensor pTensor::sum(int axis) {
         asTensor.emplace_back(accumulator);
         pTensor newTensor(1, m_cols, asTensor);
         newTensor.m_isEncrypted = m_isEncrypted;
-        newTensor.m_cc = m_cc;
-        newTensor.m_public_key = m_public_key;
-        newTensor.m_private_key = m_private_key;
         return newTensor;
     } else if (axis == 1) {
         // Sum across the rows
@@ -387,9 +367,6 @@ pTensor pTensor::sum(int axis) {
 
         pTensor newTensor(m_rows, 1, accumulator);
         newTensor.m_isEncrypted = m_isEncrypted;
-        newTensor.m_cc = m_cc;
-        newTensor.m_public_key = m_public_key;
-        newTensor.m_private_key = m_private_key;
         return newTensor;
     } else {
         std::string
@@ -411,9 +388,6 @@ pTensor pTensor::T() {
     if (!m_TCiphertexts.empty()) {
         // we flip the rows and cols. We then reassign
         pTensor newTensor(m_cols, m_rows, m_TCiphertexts, m_ciphertexts);
-        newTensor.m_cc = m_cc;
-        newTensor.m_public_key = m_public_key;
-        newTensor.m_private_key = m_private_key;
         return newTensor;
     }
     // Whelp, we need to transpose here I suppose.
@@ -442,9 +416,6 @@ pTensor pTensor::T() {
         tContainer.emplace_back(accum);
     }
     pTensor newTensor(m_cols, m_rows, tContainer, toTranspose);
-    newTensor.m_cc = m_cc;
-    newTensor.m_public_key = m_public_key;
-    newTensor.m_private_key = m_private_key;
     return newTensor;
 }
 
@@ -453,9 +424,9 @@ messageTensor pTensor::plainT() {
     messageTensor
         transposeTensor((m_messages)[0].size(), messageVector());  // we take the transpose and "store" it.
 
-    for (unsigned int i = 0; i < (m_messages).size(); i++) {
+    for (auto & m_message : m_messages) {
         for (unsigned int j = 0; j < (m_messages)[0].size(); j++) {
-            transposeTensor[j].emplace_back((m_messages)[i][j]);
+            transposeTensor[j].emplace_back(m_message[j]);
         }
     }
     return transposeTensor;
@@ -526,10 +497,6 @@ pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
         }
 
         pTensor newTensor(arg1.m_rows + arg2.m_rows, arg1.m_cols, container);
-
-        newTensor.m_cc = arg1.m_cc;
-        newTensor.m_public_key = arg1.m_public_key;
-        newTensor.m_private_key = arg1.m_private_key;
         return newTensor;
     }
     cipherTensor container = arg1.m_ciphertexts;
@@ -539,9 +506,6 @@ pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
 
     pTensor newTensor(arg1.m_rows + arg2.m_rows, arg1.m_cols, container);
 
-    newTensor.m_cc = arg1.m_cc;
-    newTensor.m_public_key = arg1.m_public_key;
-    newTensor.m_private_key = arg1.m_private_key;
     return newTensor;
 }
 pTensor pTensor::generateWeights(unsigned int numFeatures,
@@ -579,4 +543,3 @@ pTensor pTensor::generateWeights(unsigned int numFeatures,
         return container;
     }
 }
-

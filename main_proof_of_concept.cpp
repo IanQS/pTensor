@@ -63,17 +63,10 @@ int main() {
     /////////////////////////////////////////////////////////////////
     //Encrypt everything
     /////////////////////////////////////////////////////////////////
-    ptensorX.m_cc = &cc;
-    ptensorX.m_public_key = public_key;
-    ptensorX.m_private_key = private_key;
 
-    ptensorY.m_cc = &cc;
-    ptensorY.m_public_key = public_key;
-    ptensorY.m_private_key = private_key;
-
-    weights.m_cc = &cc;
-    weights.m_public_key = public_key;
-    weights.m_private_key = private_key;
+    pTensor::m_cc = &cc;
+    pTensor::m_private_key = private_key;
+    pTensor::m_public_key = public_key;
 
     auto X = ptensorX.encrypt();
     auto y = ptensorY.encrypt();
