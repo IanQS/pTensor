@@ -51,26 +51,29 @@ link_libraries(${PALISADE_LIBRARIES})
 # Actual execution
 add_executable(palisade_ML
         main.cpp
-        src/p_tensor.h
-        src/p_tensor.cpp
-        src/datasetProvider.h
-        src/datasetProvider.cpp
+        src/p_tensor.h src/p_tensor.cpp
+        src/datasetProvider.h src/datasetProvider.cpp
         src/ptensor_utils.h
         )
 
+add_executable(ml_proof_of_concept
+        main_proof_of_concept.cpp
+        src/p_tensor.h src/p_tensor.cpp
+        src/datasetProvider.h src/datasetProvider.cpp
+        src/ptensor_utils.h
+        )
 add_executable(palisade_ML_test
         # sources
-        src/p_tensor.h
-        src/p_tensor.cpp
-        src/datasetProvider.h
-        src/datasetProvider.cpp
-        src/ptensor_utils.h
+        src/p_tensor.h src/p_tensor.cpp
+        src/datasetProvider.h src/datasetProvider.cpp
+        test/src/pTensorUtils_testing.h test/src/pTensorUtils_testing.cpp
         # Tests
         test/src/unittest_pTensorTensorX.cpp
         test/src/unittest_pTensorVectorX.cpp
         test/src/unittest_pTensorScalarX.cpp
         test/src/unittest_pTensorMisc.cpp
-        test/src/unittest_datasetProvider.cpp)
+        test/src/unittest_datasetProvider.cpp
+        )
 
 target_link_libraries(palisade_ML spdlog::spdlog)
 #Link with GoogleTest

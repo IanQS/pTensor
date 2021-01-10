@@ -36,7 +36,13 @@ pTensor pTensor::decrypt() {
     lbcrypto::Plaintext pt;
     for (auto &vec: m_ciphertexts) {
         (*m_cc)->Decrypt(m_private_key, vec, &pt); // pt now contains the decrypted val
-        pt->SetLength(m_cols);
+        unsigned int numCols;
+        if (m_isRepeated){
+            numCols = 1;
+        } else{
+            numCols = m_cols;
+        }
+        pt->SetLength(numCols);
         mt.emplace_back(pt->GetCKKSPackedValue());
     }
 
@@ -209,7 +215,7 @@ pTensor pTensor::operator*(pTensor &other) {
     auto resRows = std::max(m_rows, other.m_rows);
 
     // Now, we know that it is broadcast-able. Therefore, they either have the same shape or one is shape 1 in rows
-    cipherTensor ciphertextContainer = binaryOpAbstraction("sub", other);
+    cipherTensor ciphertextContainer = binaryOpAbstraction("mult", other);
     pTensor newTensor(
         resRows, resCols, ciphertextContainer
     ); // Numpy requires that the output is the max of both
@@ -252,8 +258,13 @@ pTensor pTensor::operator*(messageScalar &other) {
 pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     assert (m_cc != nullptr && (cipherNotEmpty())
                 && (other.messageNotEmpty() || other.cipherNotEmpty()));
-    assert(other.isVector());
-    int HARDCODED_INDEX_FOR_OTHER_VECTOR = 0;
+
+    if (isMatrix() && other.isMatrix()){
+        // First do a hadamard prod
+        auto elementWiseProd = (*this) * other;
+        auto summed = elementWiseProd.sum(0);
+        return summed;
+    }
 
     pTensor rhs;
     if (m_cols == other.m_rows) { // we need to transpose to get it into a form amenable for our dot prod.
@@ -274,6 +285,8 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
         m_public_key,
         (*m_cc)->MakeCKKSPackedPlaintext(_mask));
 
+
+    int HARDCODED_INDEX_FOR_OTHER_VECTOR = 0;
     cipherTensor colAccumulator;
     lbcrypto::Plaintext pt;
     for (unsigned int i = 0; i < m_rows; i++) {
@@ -449,7 +462,7 @@ messageTensor pTensor::plainT() {
 }
 
 messageTensor pTensor::plainT(messageTensor tensor) {
-    messageTensor transposeTensor;
+    messageTensor transposeTensor(tensor[0].size(), messageVector());
 
     for (unsigned int i = 0; i < tensor.size(); i++) {
         for (unsigned int j = 0; j < tensor[0].size(); j++) {
@@ -459,21 +472,16 @@ messageTensor pTensor::plainT(messageTensor tensor) {
     return transposeTensor;
 }
 
-pTensor pTensor::identity(unsigned int n, bool encrypted) {
+pTensor pTensor::identity(unsigned int n) {
     messageTensor message(n, messageVector(n, 0));
     for (unsigned int i = 0; i < n; ++i) {
         message[i][i] = 1;
     }
 
     pTensor newTensor(n, n, message);
-    if (encrypted) {
-        auto encryptedTensor = newTensor.encrypt();
-        return encryptedTensor;
-    }
     return newTensor;
 }
-pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low, double high, bool encrypted) {
-
+pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low, double high) {
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(low, high);
 
@@ -486,13 +494,9 @@ pTensor pTensor::randomUniform(unsigned int rows, unsigned int cols, double low,
         tensorContainer.emplace_back(vectorContainer);
     }
     pTensor newTensor(rows, cols, tensorContainer);
-    if (encrypted) {
-        auto encryptedTensor = newTensor.encrypt();
-        return encryptedTensor;
-    }
     return newTensor;
 }
-pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int high, bool encrypted) {
+pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int high) {
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(low, high);
 
@@ -505,10 +509,6 @@ pTensor pTensor::randomNormal(unsigned int rows, unsigned int cols, int low, int
         tensorContainer.emplace_back(vectorContainer);
     }
     pTensor newTensor(rows, cols, tensorContainer);
-    if (encrypted) {
-        auto encryptedTensor = newTensor.encrypt();
-        return encryptedTensor;
-    }
     return newTensor;
 }
 pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
@@ -544,3 +544,39 @@ pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
     newTensor.m_private_key = arg1.m_private_key;
     return newTensor;
 }
+pTensor pTensor::generateWeights(unsigned int numFeatures,
+                                 unsigned int numRepeats,
+                                 const messageTensor &seed,
+                                 const std::string &randomInitializer) {
+    if (!seed.empty()) {
+        assert(seed.size() == numFeatures);
+        messageTensor repeatedWeights;
+        for (auto &vector: seed) {
+            assert(vector.size() == 1);
+            repeatedWeights.emplace_back(messageVector(numRepeats, vector[0]));
+        }
+        pTensor newTensor(numFeatures, numRepeats, repeatedWeights);
+        return newTensor;
+    } else {
+        pTensor container;
+        if (randomInitializer == "uniform") {
+            container = randomUniform(numFeatures, 1);
+
+        } else if (randomInitializer == "normal") {
+            container = randomNormal(numFeatures, 1);
+
+        } else {
+            std::string errMsg = "Given unrecognized randomInitializer distribution: " + randomInitializer;
+            throw std::runtime_error(errMsg);
+        }
+
+        auto msg = container.getMessage();
+        messageTensor repeatedWeights;
+        for (auto &vec: msg) {
+            repeatedWeights.emplace_back(messageVector(numRepeats, vec[0]));
+        }
+        container.m_messages = repeatedWeights;
+        return container;
+    }
+}
+
