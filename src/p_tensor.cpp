@@ -36,7 +36,13 @@ pTensor pTensor::decrypt() {
     lbcrypto::Plaintext pt;
     for (auto &vec: m_ciphertexts) {
         (*m_cc)->Decrypt(m_private_key, vec, &pt); // pt now contains the decrypted val
-        pt->SetLength(m_cols);
+        unsigned int numCols;
+        if (m_isRepeated){
+            numCols = 1;
+        } else{
+            numCols = m_cols;
+        }
+        pt->SetLength(numCols);
         mt.emplace_back(pt->GetCKKSPackedValue());
     }
 
@@ -209,7 +215,7 @@ pTensor pTensor::operator*(pTensor &other) {
     auto resRows = std::max(m_rows, other.m_rows);
 
     // Now, we know that it is broadcast-able. Therefore, they either have the same shape or one is shape 1 in rows
-    cipherTensor ciphertextContainer = binaryOpAbstraction("sub", other);
+    cipherTensor ciphertextContainer = binaryOpAbstraction("mult", other);
     pTensor newTensor(
         resRows, resCols, ciphertextContainer
     ); // Numpy requires that the output is the max of both
@@ -252,8 +258,13 @@ pTensor pTensor::operator*(messageScalar &other) {
 pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     assert (m_cc != nullptr && (cipherNotEmpty())
                 && (other.messageNotEmpty() || other.cipherNotEmpty()));
-    assert(other.isVector());
-    int HARDCODED_INDEX_FOR_OTHER_VECTOR = 0;
+
+    if (isMatrix() && other.isMatrix()){
+        // First do a hadamard prod
+        auto elementWiseProd = (*this) * other;
+        auto summed = elementWiseProd.sum(0);
+        return summed;
+    }
 
     pTensor rhs;
     if (m_cols == other.m_rows) { // we need to transpose to get it into a form amenable for our dot prod.
@@ -274,6 +285,8 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
         m_public_key,
         (*m_cc)->MakeCKKSPackedPlaintext(_mask));
 
+
+    int HARDCODED_INDEX_FOR_OTHER_VECTOR = 0;
     cipherTensor colAccumulator;
     lbcrypto::Plaintext pt;
     for (unsigned int i = 0; i < m_rows; i++) {
@@ -449,7 +462,7 @@ messageTensor pTensor::plainT() {
 }
 
 messageTensor pTensor::plainT(messageTensor tensor) {
-    messageTensor transposeTensor;
+    messageTensor transposeTensor(tensor[0].size(), messageVector());
 
     for (unsigned int i = 0; i < tensor.size(); i++) {
         for (unsigned int j = 0; j < tensor[0].size(); j++) {
@@ -542,7 +555,7 @@ pTensor pTensor::generateWeights(unsigned int numFeatures,
             assert(vector.size() == 1);
             repeatedWeights.emplace_back(messageVector(numRepeats, vector[0]));
         }
-        pTensor newTensor(numFeatures, 1, repeatedWeights);
+        pTensor newTensor(numFeatures, numRepeats, repeatedWeights);
         return newTensor;
     } else {
         pTensor container;

@@ -408,7 +408,7 @@ class pTensor {
    *    Generates the distribution
    * @return
    */
-  static pTensor generateWeights(unsigned int numFeatures, unsigned int numRepeats, const messageTensor& seed, const std::string& randomInitializer);
+  static pTensor generateWeights(unsigned int numFeatures, unsigned int numRepeats, const messageTensor& seed, const std::string& randomInitializer="");
 
   /**
    * Vertically stack the tensors.
