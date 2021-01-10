@@ -48,13 +48,9 @@ class pTensor_datasetProvider : public ::testing::Test {
       public_key = keys.publicKey;
       private_key = keys.secretKey;
 
-      X.m_cc = &cc;
-      X.m_public_key = public_key;
-      X.m_private_key = private_key;
-
-      y.m_cc = &cc;
-      y.m_public_key = public_key;
-      y.m_private_key = private_key;
+      pTensor::m_cc = &cc;
+      pTensor::m_private_key = private_key;
+      pTensor::m_public_key = public_key;
 
   }
 

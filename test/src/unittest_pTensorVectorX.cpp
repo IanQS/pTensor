@@ -52,17 +52,9 @@ class pTensor_VectorTest : public ::testing::Test {
       public_key = keys.publicKey;
       private_key = keys.secretKey;
 
-      t1.m_cc = &cc;
-      t1.m_public_key = public_key;
-      t1.m_private_key = private_key;
-
-      t2.m_cc = &cc;
-      t2.m_public_key = public_key;
-      t2.m_private_key = private_key;
-
-      t3.m_cc = &cc;
-      t3.m_public_key = public_key;
-      t3.m_private_key = private_key;
+      pTensor::m_cc = &cc;
+      pTensor::m_private_key = private_key;
+      pTensor::m_public_key = public_key;
 
   }
 

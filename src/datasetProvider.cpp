@@ -59,14 +59,6 @@ providedDataset datasetProvider::provide(int randomState, bool encrypt) {
         pTensor pTensorShuffledX(numberOfRows, numberOfCols, shuffledXMessages);
         pTensor pTensorShuffledY(numberOfRows, 1, shuffledYMessages);
 
-        pTensorShuffledX.m_cc = m_X.m_cc;
-        pTensorShuffledX.m_public_key = m_X.m_public_key;
-        pTensorShuffledX.m_private_key = m_X.m_private_key;
-
-        pTensorShuffledY.m_cc = m_y.m_cc;
-        pTensorShuffledY.m_public_key = m_y.m_public_key;
-        pTensorShuffledY.m_private_key = m_y.m_private_key;
-
         if (encrypt) {
             auto encryptedX = pTensorShuffledX.encrypt();
             auto encryptedY = pTensorShuffledY.encrypt();

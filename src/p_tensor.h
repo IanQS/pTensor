@@ -51,9 +51,9 @@ using realVector = std::vector<realScalar>;
 class pTensor {
  public:
 
-  lbcrypto::CryptoContext<lbcrypto::DCRTPoly> *m_cc = nullptr;
-  shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> m_public_key = nullptr;
-  shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> m_private_key = nullptr;
+  static lbcrypto::CryptoContext<lbcrypto::DCRTPoly> *m_cc;
+  static shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> m_public_key;
+  static shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> m_private_key;
 
   pTensor() = default;
 
@@ -408,7 +408,10 @@ class pTensor {
    *    Generates the distribution
    * @return
    */
-  static pTensor generateWeights(unsigned int numFeatures, unsigned int numRepeats, const messageTensor& seed, const std::string& randomInitializer="");
+  static pTensor generateWeights(unsigned int numFeatures,
+                                 unsigned int numRepeats,
+                                 const messageTensor &seed,
+                                 const std::string &randomInitializer = "");
 
   /**
    * Vertically stack the tensors.
