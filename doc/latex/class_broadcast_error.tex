@@ -1,0 +1,106 @@
+\hypertarget{class_broadcast_error}{}\doxysection{Broadcast\+Error Class Reference}
+\label{class_broadcast_error}\index{BroadcastError@{BroadcastError}}
+
+
+{\ttfamily \#include $<$ptensor\+\_\+utils.\+h$>$}
+
+
+
+Inheritance diagram for Broadcast\+Error\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{class_broadcast_error__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Broadcast\+Error\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{class_broadcast_error__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_broadcast_error_a3540eb7b77d2bcb846ba70b13e053287}{Broadcast\+Error}} (std\+::tuple$<$ int, int $>$ \mbox{\hyperlink{class_broadcast_error_a18c18b3b8d09e751f6df0d7b7e87dd23}{s1}}, std\+::tuple$<$ int, int $>$ \mbox{\hyperlink{class_broadcast_error_adda3945385ebff7fe3661fd8364c11d4}{s2}})
+\item 
+virtual const char $\ast$ \mbox{\hyperlink{class_broadcast_error_ad9e17ab64f636e60bb5f1dda35699d2c}{what}} () const  throw ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::tuple$<$ int, int $>$ \mbox{\hyperlink{class_broadcast_error_a18c18b3b8d09e751f6df0d7b7e87dd23}{s1}}
+\item 
+std\+::tuple$<$ int, int $>$ \mbox{\hyperlink{class_broadcast_error_adda3945385ebff7fe3661fd8364c11d4}{s2}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Created by ian on 12/22/20. \href{https://numpy.org/devdocs/user/theory.broadcasting.html}{\texttt{ https\+://numpy.\+org/devdocs/user/theory.\+broadcasting.\+html}}
+
+We base our implementation on this. To broadcast we need to receive another instance of \mbox{\hyperlink{classp_tensor}{p\+Tensor}} the crux of which is\+: 
+\begin{DoxyParams}{Parameters}
+{\em other} & other \mbox{\hyperlink{classp_tensor}{p\+Tensor}} that we may want to broadcast over \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 16 of file ptensor\+\_\+utils.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_broadcast_error_a3540eb7b77d2bcb846ba70b13e053287}\label{class_broadcast_error_a3540eb7b77d2bcb846ba70b13e053287}} 
+\index{BroadcastError@{BroadcastError}!BroadcastError@{BroadcastError}}
+\index{BroadcastError@{BroadcastError}!BroadcastError@{BroadcastError}}
+\doxysubsubsection{\texorpdfstring{BroadcastError()}{BroadcastError()}}
+{\footnotesize\ttfamily Broadcast\+Error\+::\+Broadcast\+Error (\begin{DoxyParamCaption}\item[{std\+::tuple$<$ int, int $>$}]{s1,  }\item[{std\+::tuple$<$ int, int $>$}]{s2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 18 of file ptensor\+\_\+utils.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_broadcast_error_ad9e17ab64f636e60bb5f1dda35699d2c}\label{class_broadcast_error_ad9e17ab64f636e60bb5f1dda35699d2c}} 
+\index{BroadcastError@{BroadcastError}!what@{what}}
+\index{what@{what}!BroadcastError@{BroadcastError}}
+\doxysubsubsection{\texorpdfstring{what()}{what()}}
+{\footnotesize\ttfamily virtual const char$\ast$ Broadcast\+Error\+::what (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const throw ( ) \hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 22 of file ptensor\+\_\+utils.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_broadcast_error_a18c18b3b8d09e751f6df0d7b7e87dd23}\label{class_broadcast_error_a18c18b3b8d09e751f6df0d7b7e87dd23}} 
+\index{BroadcastError@{BroadcastError}!s1@{s1}}
+\index{s1@{s1}!BroadcastError@{BroadcastError}}
+\doxysubsubsection{\texorpdfstring{s1}{s1}}
+{\footnotesize\ttfamily std\+::tuple$<$int, int$>$ Broadcast\+Error\+::s1}
+
+
+
+Definition at line 38 of file ptensor\+\_\+utils.\+h.
+
+\mbox{\Hypertarget{class_broadcast_error_adda3945385ebff7fe3661fd8364c11d4}\label{class_broadcast_error_adda3945385ebff7fe3661fd8364c11d4}} 
+\index{BroadcastError@{BroadcastError}!s2@{s2}}
+\index{s2@{s2}!BroadcastError@{BroadcastError}}
+\doxysubsubsection{\texorpdfstring{s2}{s2}}
+{\footnotesize\ttfamily std\+::tuple$<$int, int$>$ Broadcast\+Error\+::s2}
+
+
+
+Definition at line 39 of file ptensor\+\_\+utils.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{ptensor__utils_8h}{ptensor\+\_\+utils.\+h}}\end{DoxyCompactItemize}

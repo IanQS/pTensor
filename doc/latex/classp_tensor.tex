@@ -1,0 +1,1050 @@
+\hypertarget{classp_tensor}{}\doxysection{p\+Tensor Class Reference}
+\label{classp_tensor}\index{pTensor@{pTensor}}
+
+
+{\ttfamily \#include $<$p\+\_\+tensor.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classp_tensor_a9b2e5fdd0349aa0f2d74c2d77ba5e21c}{p\+Tensor}} ()=default
+\item 
+\mbox{\hyperlink{classp_tensor_a8a1c2cfc1d5f8ee109d1e0261920e262}{p\+Tensor}} (unsigned int rows, unsigned int cols, \mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} \&c\+Tensor, \mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} \&c\+Tensor\+Transpose, bool is\+Repeated=false)
+\item 
+\mbox{\hyperlink{classp_tensor_a0635468d8de140ddf6a904ef11c73ce4}{p\+Tensor}} (unsigned int rows, unsigned int cols, \mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} \&\mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}}, bool is\+Repeated=false)
+\item 
+\mbox{\hyperlink{classp_tensor_a8a0a9b4e69cc3adb249ec3891605723b}{$\sim$p\+Tensor}} ()=default
+\item 
+\mbox{\hyperlink{classp_tensor_a765d8ca4311e304cfa5630a87457a009}{p\+Tensor}} (unsigned int rows, unsigned int cols, \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&complex\+Tensor)
+\item 
+std\+::tuple$<$ unsigned int, unsigned int $>$ \mbox{\hyperlink{classp_tensor_a1576ec18c9cfbc2333ee7b8341221fc1}{shape}} () const
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_ad5877fa3743cffbef841d2431fa85663}{encrypt}} ()
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a61ac4a37b49336b58b21b05d697c6b4f}{decrypt}} ()
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_ad9e7b02e23b9dc94f9e3a97730bb0779}{operator+}} (\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_af1c8db5132f979f8298feda905c25449}{operator+}} (\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_aab8dc21e635cac462c7dbaec052683a3}{operator+}} (\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a319ba747ff30e324491f4b72a5fcd90c}{operator+}} (\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a627fe81ee2c0f924949c8db14cbada92}{operator-\/}} (\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_ad797c06201c01997dfe41fd7a85ab842}{operator-\/}} (\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_ad5dc5028f7d10538b6647e9e7cfeb420}{operator-\/}} (\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_acd0965bc11336d0aa2ea8463f1c1f0a2}{operator-\/}} (\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_aed0c303557a983bb5b339eaa3be85fc1}{operator$\ast$}} (\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_aab920b5ad26d331e879bc84b9111ce8b}{operator$\ast$}} (\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a0cbdf5fb50b822d186b5f841bcc1801a}{operator$\ast$}} (\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a127c1db39f0ced8eeb40c9d89b4009f3}{operator$\ast$}} (\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} \&other)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a78891d208d66d635bea00aff9969fe97}{dot}} (\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&other, bool as\+Row\+Vector=true)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a7963717cc24031e12638905ac1c94943}{sum}} ()
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a82f05ba4ad0074ffc8f30e89b4f4ff09}{sum}} (int axis)
+\item 
+\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_ac120fe46e6371d6f4af47c86e6a2961f}{T}} ()
+\item 
+\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \mbox{\hyperlink{classp_tensor_a7e80733ef047f170aec2c69d556728ad}{plainT}} ()
+\item 
+void \mbox{\hyperlink{classp_tensor_a99c6dc8f04aa9d91161ff55d79ea76a3}{debug\+Messages}} ()
+\item 
+bool \mbox{\hyperlink{classp_tensor_a69a150cbdc8b1f64d8d8ed68a65d6008}{message\+Not\+Empty}} ()
+\item 
+bool \mbox{\hyperlink{classp_tensor_a3f49a55f0146929b8b7401c54db02a63}{cipher\+Not\+Empty}} ()
+\item 
+\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \mbox{\hyperlink{classp_tensor_a1db7d0ae74520f0fb6b019e413b694e7}{get\+Message}} ()
+\item 
+bool \mbox{\hyperlink{classp_tensor_a0c9bbddbdd1799ba1ff403838da412da}{is\+Scalar}} () const
+\item 
+bool \mbox{\hyperlink{classp_tensor_a5bb6fe89d7b05fff1fac728245b071a2}{is\+Vector}} () const
+\item 
+bool \mbox{\hyperlink{classp_tensor_a5b87de648aab3180b0d3952a51f4af53}{is\+Matrix}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \mbox{\hyperlink{classp_tensor_ab2d48fc3929926dd4a4eae51764cdd95}{plainT}} (\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} message)
+\item 
+static \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_af37c5528c969c6a04b75d89735940cd4}{identity}} (unsigned int n)
+\item 
+static \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a560f55ff492ccf2b3a8a993fc055863f}{random\+Uniform}} (unsigned int rows, unsigned int cols, double low=0.\+0, double high=1.\+0)
+\item 
+static \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_aa2a8678b5f7fbbd0444636946039ed91}{random\+Normal}} (unsigned int rows, unsigned int cols, int low=0, int high=1)
+\item 
+static \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a28c160503bc274f4a5e2e64b83300782}{generate\+Weights}} (unsigned int num\+Features, unsigned int num\+Repeats, const \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&seed, const std\+::string \&random\+Initializer=\char`\"{}\char`\"{})
+\item 
+static \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \mbox{\hyperlink{classp_tensor_a7650b7ab57fb00b567fe4dce53d68f5d}{hstack}} (\mbox{\hyperlink{classp_tensor}{p\+Tensor}} arg1, \mbox{\hyperlink{classp_tensor}{p\+Tensor}} arg2)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static lbcrypto\+::\+Crypto\+Context$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$ $\ast$ \mbox{\hyperlink{classp_tensor_a02ad15bfbf654fc17bc5ca96a8afbaf7}{m\+\_\+cc}} = nullptr
+\item 
+static shared\+\_\+ptr$<$ lbcrypto\+::\+L\+P\+Public\+Key\+Impl$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$ $>$ \mbox{\hyperlink{classp_tensor_a36f21dfe5dc1531100b39cd4f2563303}{m\+\_\+public\+\_\+key}} = nullptr
+\item 
+static shared\+\_\+ptr$<$ lbcrypto\+::\+L\+P\+Private\+Key\+Impl$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$ $>$ \mbox{\hyperlink{classp_tensor_afd74c8ed7f93741aa41c40bdf599f9c0}{m\+\_\+private\+\_\+key}} = nullptr
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 53 of file p\+\_\+tensor.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classp_tensor_a9b2e5fdd0349aa0f2d74c2d77ba5e21c}\label{classp_tensor_a9b2e5fdd0349aa0f2d74c2d77ba5e21c}} 
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{pTensor()}{pTensor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily p\+Tensor\+::p\+Tensor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classp_tensor_a9b2e5fdd0349aa0f2d74c2d77ba5e21c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a8a1c2cfc1d5f8ee109d1e0261920e262}\label{classp_tensor_a8a1c2cfc1d5f8ee109d1e0261920e262}} 
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{pTensor()}{pTensor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily p\+Tensor\+::p\+Tensor (\begin{DoxyParamCaption}\item[{unsigned int}]{rows,  }\item[{unsigned int}]{cols,  }\item[{\mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} \&}]{c\+Tensor,  }\item[{\mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} \&}]{c\+Tensor\+Transpose,  }\item[{bool}]{is\+Repeated = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialize a \mbox{\hyperlink{classp_tensor}{p\+Tensor}} from both the tensor itself as well as the transpose that we obtained (through some means or another). This allows us to operate faster. 
+\begin{DoxyParams}{Parameters}
+{\em rows} & number of rows \\
+\hline
+{\em cols} & number of cols \\
+\hline
+{\em c\+Tensor} & ciphertext tensor \\
+\hline
+{\em c\+Tensor\+Transpose} & transpose of the aforementioned ciphertext \\
+\hline
+{\em is\+Repeated} & whether the cipher has been repeated. If yes, we do not project it in the S\+C\+A\+L\+AR case. else, we project it \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 75 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{classp_tensor_a0635468d8de140ddf6a904ef11c73ce4}\label{classp_tensor_a0635468d8de140ddf6a904ef11c73ce4}} 
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{pTensor()}{pTensor()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily p\+Tensor\+::p\+Tensor (\begin{DoxyParamCaption}\item[{unsigned int}]{rows,  }\item[{unsigned int}]{cols,  }\item[{\mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} \&}]{cipher\+Tensor,  }\item[{bool}]{is\+Repeated = {\ttfamily false} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Instantiate the object directly from a ciphertext matrix 
+\begin{DoxyParams}{Parameters}
+{\em rows} & number of rows \\
+\hline
+{\em cols} & number of cols. Only used in the decryption process \\
+\hline
+{\em cipher\+Tensor} & the encrypted message to store \\
+\hline
+{\em precompute\+Transpose} & whether to encrypt the transpose of this \mbox{\hyperlink{classp_tensor}{p\+Tensor}} in addition to the actual value. \\
+\hline
+{\em is\+Repeated} & whether the cipher has been repeated. If yes, we do not project it in the S\+C\+A\+L\+AR case. else, we project it \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 107 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{classp_tensor_a8a0a9b4e69cc3adb249ec3891605723b}\label{classp_tensor_a8a0a9b4e69cc3adb249ec3891605723b}} 
+\index{pTensor@{pTensor}!````~pTensor@{$\sim$pTensor}}
+\index{````~pTensor@{$\sim$pTensor}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{$\sim$pTensor()}{~pTensor()}}
+{\footnotesize\ttfamily p\+Tensor\+::$\sim$p\+Tensor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+\mbox{\Hypertarget{classp_tensor_a765d8ca4311e304cfa5630a87457a009}\label{classp_tensor_a765d8ca4311e304cfa5630a87457a009}} 
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\index{pTensor@{pTensor}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{pTensor()}{pTensor()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily p\+Tensor\+::p\+Tensor (\begin{DoxyParamCaption}\item[{unsigned int}]{rows,  }\item[{unsigned int}]{cols,  }\item[{\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&}]{complex\+Tensor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Instantiate the object directly from a raw message matrix 
+\begin{DoxyParams}{Parameters}
+{\em rows} & number of rows \\
+\hline
+{\em cols} & number of cols. Only used in the decryption process \\
+\hline
+{\em complex\+Tensor} & the raw message to store \\
+\hline
+{\em precompute\+Transpose} & whether to encrypt the transpose of this \mbox{\hyperlink{classp_tensor}{p\+Tensor}} in addition to the actual value. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 138 of file p\+\_\+tensor.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classp_tensor_a3f49a55f0146929b8b7401c54db02a63}\label{classp_tensor_a3f49a55f0146929b8b7401c54db02a63}} 
+\index{pTensor@{pTensor}!cipherNotEmpty@{cipherNotEmpty}}
+\index{cipherNotEmpty@{cipherNotEmpty}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{cipherNotEmpty()}{cipherNotEmpty()}}
+{\footnotesize\ttfamily bool p\+Tensor\+::cipher\+Not\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if the cipher is non-\/empty \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 344 of file p\+\_\+tensor.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a3f49a55f0146929b8b7401c54db02a63_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a99c6dc8f04aa9d91161ff55d79ea76a3}\label{classp_tensor_a99c6dc8f04aa9d91161ff55d79ea76a3}} 
+\index{pTensor@{pTensor}!debugMessages@{debugMessages}}
+\index{debugMessages@{debugMessages}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{debugMessages()}{debugMessages()}}
+{\footnotesize\ttfamily void p\+Tensor\+::debug\+Messages (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Debug the messages from an U\+N\+E\+N\+C\+R\+Y\+P\+T\+ED matrix. this is unrealistic and will not be available for general purposes as we would need the secret key 
+
+Definition at line 323 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{classp_tensor_a61ac4a37b49336b58b21b05d697c6b4f}\label{classp_tensor_a61ac4a37b49336b58b21b05d697c6b4f}} 
+\index{pTensor@{pTensor}!decrypt@{decrypt}}
+\index{decrypt@{decrypt}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{decrypt()}{decrypt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::decrypt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Decrypt the matrix. N\+O\+TE\+: this fails if we do not have a cryptocontext, private key and m\+\_\+ciphertext set. 
+
+Definition at line 36 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a61ac4a37b49336b58b21b05d697c6b4f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a78891d208d66d635bea00aff9969fe97}\label{classp_tensor_a78891d208d66d635bea00aff9969fe97}} 
+\index{pTensor@{pTensor}!dot@{dot}}
+\index{dot@{dot}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{dot()}{dot()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::dot (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&}]{other,  }\item[{bool}]{as\+Row\+Vector = {\ttfamily true} }\end{DoxyParamCaption})}
+
+Dot product only tested between vector-\/vector and matrix-\/vector. We let the user choose between a row vector or a col-\/vector
+
+Note\+: a col-\/vector is returned as a matrix. where only the first entry of each row is of interest. This is equivalent to the row-\/vector version.
+
+Some \#precomputation happens here that can be eventually disabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Dot product as vector-\/vector or matrix-\/vector Note\+: we also store the transpose at the same time just for some speed. 
+\begin{DoxyParams}{Parameters}
+{\em other} & The thing to dot prod with. In the ML setting this is a vector of the weights \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 251 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a78891d208d66d635bea00aff9969fe97_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_ad5877fa3743cffbef841d2431fa85663}\label{classp_tensor_ad5877fa3743cffbef841d2431fa85663}} 
+\index{pTensor@{pTensor}!encrypt@{encrypt}}
+\index{encrypt@{encrypt}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{encrypt()}{encrypt()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::encrypt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Encrypt the matrix. N\+O\+TE\+: this fails if we do not have a cryptocontext, public key and m\+\_\+message set. 
+
+Definition at line 11 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_ad5877fa3743cffbef841d2431fa85663_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_ad5877fa3743cffbef841d2431fa85663_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a28c160503bc274f4a5e2e64b83300782}\label{classp_tensor_a28c160503bc274f4a5e2e64b83300782}} 
+\index{pTensor@{pTensor}!generateWeights@{generateWeights}}
+\index{generateWeights@{generateWeights}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{generateWeights()}{generateWeights()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::generate\+Weights (\begin{DoxyParamCaption}\item[{unsigned int}]{num\+Features,  }\item[{unsigned int}]{num\+Repeats,  }\item[{const \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&}]{seed,  }\item[{const std\+::string \&}]{random\+Initializer = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate repeated weigts. Used for matrix-\/matrix dot product a la X.\+dot(weights). This is used because it is more efficient to encrypt the data feature-\/wise (num features, num observations) since, in general, there are more observations than features. 
+\begin{DoxyParams}{Parameters}
+{\em num\+Features} & The number of features that exist \\
+\hline
+{\em num\+Repeats} & The number of times to repeat the weights \\
+\hline
+{\em seed} & If given, we use these values to seed our weights. I.\+e we do not generate random values that are repeated and we just repeat whatever was given \\
+\hline
+{\em random\+Initializer} & Generates the distribution \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 511 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a28c160503bc274f4a5e2e64b83300782_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a1db7d0ae74520f0fb6b019e413b694e7}\label{classp_tensor_a1db7d0ae74520f0fb6b019e413b694e7}} 
+\index{pTensor@{pTensor}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} p\+Tensor\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the message \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 434 of file p\+\_\+tensor.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a1db7d0ae74520f0fb6b019e413b694e7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a7650b7ab57fb00b567fe4dce53d68f5d}\label{classp_tensor_a7650b7ab57fb00b567fe4dce53d68f5d}} 
+\index{pTensor@{pTensor}!hstack@{hstack}}
+\index{hstack@{hstack}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{hstack()}{hstack()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::hstack (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}}}]{arg1,  }\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}}}]{arg2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Vertically stack the tensors. 
+\begin{DoxyParams}{Parameters}
+{\em arg1} & \\
+\hline
+{\em arg2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 485 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a7650b7ab57fb00b567fe4dce53d68f5d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_af37c5528c969c6a04b75d89735940cd4}\label{classp_tensor_af37c5528c969c6a04b75d89735940cd4}} 
+\index{pTensor@{pTensor}!identity@{identity}}
+\index{identity@{identity}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{identity()}{identity()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::identity (\begin{DoxyParamCaption}\item[{unsigned int}]{n }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate the (n, n) identity matrix. We either return it in encrypted form or plaintext form but it is trivial to encrypt via the utility function 
+\begin{DoxyParams}{Parameters}
+{\em n} & The size of the matrix \\
+\hline
+{\em encrypted} & Flag to denote if it should be encrypted (default false) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 446 of file p\+\_\+tensor.\+cpp.
+
+\mbox{\Hypertarget{classp_tensor_a5b87de648aab3180b0d3952a51f4af53}\label{classp_tensor_a5b87de648aab3180b0d3952a51f4af53}} 
+\index{pTensor@{pTensor}!isMatrix@{isMatrix}}
+\index{isMatrix@{isMatrix}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{isMatrix()}{isMatrix()}}
+{\footnotesize\ttfamily bool p\+Tensor\+::is\+Matrix (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+We only support up to matrices so we can just determine if it is a matrix by process of elimination \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 460 of file p\+\_\+tensor.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classp_tensor_a5b87de648aab3180b0d3952a51f4af53_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a5b87de648aab3180b0d3952a51f4af53_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a0c9bbddbdd1799ba1ff403838da412da}\label{classp_tensor_a0c9bbddbdd1799ba1ff403838da412da}} 
+\index{pTensor@{pTensor}!isScalar@{isScalar}}
+\index{isScalar@{isScalar}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{isScalar()}{isScalar()}}
+{\footnotesize\ttfamily bool p\+Tensor\+::is\+Scalar (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if the current \mbox{\hyperlink{classp_tensor}{p\+Tensor}} is a scalar \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 442 of file p\+\_\+tensor.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a0c9bbddbdd1799ba1ff403838da412da_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a5bb6fe89d7b05fff1fac728245b071a2}\label{classp_tensor_a5bb6fe89d7b05fff1fac728245b071a2}} 
+\index{pTensor@{pTensor}!isVector@{isVector}}
+\index{isVector@{isVector}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{isVector()}{isVector()}}
+{\footnotesize\ttfamily bool p\+Tensor\+::is\+Vector (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if the current \mbox{\hyperlink{classp_tensor}{p\+Tensor}} is a vector \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 450 of file p\+\_\+tensor.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a5bb6fe89d7b05fff1fac728245b071a2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a69a150cbdc8b1f64d8d8ed68a65d6008}\label{classp_tensor_a69a150cbdc8b1f64d8d8ed68a65d6008}} 
+\index{pTensor@{pTensor}!messageNotEmpty@{messageNotEmpty}}
+\index{messageNotEmpty@{messageNotEmpty}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{messageNotEmpty()}{messageNotEmpty()}}
+{\footnotesize\ttfamily bool p\+Tensor\+::message\+Not\+Empty (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if the message is non-\/empty \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 336 of file p\+\_\+tensor.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a69a150cbdc8b1f64d8d8ed68a65d6008_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a127c1db39f0ced8eeb40c9d89b4009f3}\label{classp_tensor_a127c1db39f0ced8eeb40c9d89b4009f3}} 
+\index{pTensor@{pTensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} \&}]{other }\end{DoxyParamCaption})}
+
+Hadamard where R\+HS is a scalar that we broadcast into the number of cols of the thing we want to add. 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 232 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{classp_tensor_a127c1db39f0ced8eeb40c9d89b4009f3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_aab920b5ad26d331e879bc84b9111ce8b}\label{classp_tensor_aab920b5ad26d331e879bc84b9111ce8b}} 
+\index{pTensor@{pTensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&}]{other }\end{DoxyParamCaption})}
+
+Hadamard where the R\+HS is a matrix 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 221 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{classp_tensor_aab920b5ad26d331e879bc84b9111ce8b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a0cbdf5fb50b822d186b5f841bcc1801a}\label{classp_tensor_a0cbdf5fb50b822d186b5f841bcc1801a}} 
+\index{pTensor@{pTensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} \&}]{other }\end{DoxyParamCaption})}
+
+Hadamard where the R\+HS is a vector that we broadcast 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 225 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{classp_tensor_a0cbdf5fb50b822d186b5f841bcc1801a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_aed0c303557a983bb5b339eaa3be85fc1}\label{classp_tensor_aed0c303557a983bb5b339eaa3be85fc1}} 
+\index{pTensor@{pTensor}!operator$\ast$@{operator$\ast$}}
+\index{operator$\ast$@{operator$\ast$}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator$\ast$()}{operator*()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator$\ast$ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&}]{other }\end{DoxyParamCaption})}
+
+Multiplication operator. Uses Eval\+Add. The R\+HS can either be a message \mbox{\hyperlink{classp_tensor}{p\+Tensor}} or an encrypted \mbox{\hyperlink{classp_tensor}{p\+Tensor}} and we handle the internal conversions directly
+
+Some \#precomputation happens here that can be eventually disabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: thing to subtract from the current \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Z = this -\/ other 
+\end{DoxyReturn}
+
+
+Definition at line 206 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_aed0c303557a983bb5b339eaa3be85fc1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a319ba747ff30e324491f4b72a5fcd90c}\label{classp_tensor_a319ba747ff30e324491f4b72a5fcd90c}} 
+\index{pTensor@{pTensor}!operator+@{operator+}}
+\index{operator+@{operator+}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} \&}]{other }\end{DoxyParamCaption})}
+
+Add where the R\+HS is a scalar value. We project it into a vector of the number of cols of the thing we want to add. 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 158 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classp_tensor_a319ba747ff30e324491f4b72a5fcd90c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_af1c8db5132f979f8298feda905c25449}\label{classp_tensor_af1c8db5132f979f8298feda905c25449}} 
+\index{pTensor@{pTensor}!operator+@{operator+}}
+\index{operator+@{operator+}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&}]{other }\end{DoxyParamCaption})}
+
+Add where the R\+HS is a matrix 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 148 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classp_tensor_af1c8db5132f979f8298feda905c25449_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_aab8dc21e635cac462c7dbaec052683a3}\label{classp_tensor_aab8dc21e635cac462c7dbaec052683a3}} 
+\index{pTensor@{pTensor}!operator+@{operator+}}
+\index{operator+@{operator+}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} \&}]{other }\end{DoxyParamCaption})}
+
+Add where the R\+HS is a vector 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 152 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classp_tensor_aab8dc21e635cac462c7dbaec052683a3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_ad9e7b02e23b9dc94f9e3a97730bb0779}\label{classp_tensor_ad9e7b02e23b9dc94f9e3a97730bb0779}} 
+\index{pTensor@{pTensor}!operator+@{operator+}}
+\index{operator+@{operator+}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator+()}{operator+()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator+ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&}]{other }\end{DoxyParamCaption})}
+
+Addition operator. Uses Eval\+Add. The R\+HS can either be a message \mbox{\hyperlink{classp_tensor}{p\+Tensor}} or an encrypted \mbox{\hyperlink{classp_tensor}{p\+Tensor}} and we handle the internal conversions directly. In the case of the other param being a message, we just cast
+
+Some \#precomputation happens here that can be eventually disabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: thing to add \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Z = this + other 
+\end{DoxyReturn}
+
+
+Definition at line 133 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_ad9e7b02e23b9dc94f9e3a97730bb0779_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_acd0965bc11336d0aa2ea8463f1c1f0a2}\label{classp_tensor_acd0965bc11336d0aa2ea8463f1c1f0a2}} 
+\index{pTensor@{pTensor}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} \&}]{other }\end{DoxyParamCaption})}
+
+Subtraction where the R\+HS is a scalar. We project it into a vector of the number of cols of the thing we want to add. 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 194 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classp_tensor_acd0965bc11336d0aa2ea8463f1c1f0a2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_ad797c06201c01997dfe41fd7a85ab842}\label{classp_tensor_ad797c06201c01997dfe41fd7a85ab842}} 
+\index{pTensor@{pTensor}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} \&}]{other }\end{DoxyParamCaption})}
+
+Subtraction where the R\+HS is a matrix 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 184 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classp_tensor_ad797c06201c01997dfe41fd7a85ab842_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_ad5dc5028f7d10538b6647e9e7cfeb420}\label{classp_tensor_ad5dc5028f7d10538b6647e9e7cfeb420}} 
+\index{pTensor@{pTensor}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} \&}]{other }\end{DoxyParamCaption})}
+
+Subtraction where the R\+HS is a vector 
+\begin{DoxyParams}{Parameters}
+{\em other} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 188 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classp_tensor_ad5dc5028f7d10538b6647e9e7cfeb420_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a627fe81ee2c0f924949c8db14cbada92}\label{classp_tensor_a627fe81ee2c0f924949c8db14cbada92}} 
+\index{pTensor@{pTensor}!operator-\/@{operator-\/}}
+\index{operator-\/@{operator-\/}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{operator-\/()}{operator-()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::operator-\/ (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&}]{other }\end{DoxyParamCaption})}
+
+Subtraction operator. Uses Eval\+Sub. The R\+HS can either be a message \mbox{\hyperlink{classp_tensor}{p\+Tensor}} or an encrypted \mbox{\hyperlink{classp_tensor}{p\+Tensor}} and we handle the internal conversions directly
+
+Some \#precomputation happens here that can be eventually disabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & \+: thing to subtract from the current \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Z = this -\/ other 
+\end{DoxyReturn}
+
+
+Definition at line 169 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a627fe81ee2c0f924949c8db14cbada92_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a7e80733ef047f170aec2c69d556728ad}\label{classp_tensor_a7e80733ef047f170aec2c69d556728ad}} 
+\index{pTensor@{pTensor}!plainT@{plainT}}
+\index{plainT@{plainT}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{plainT()}{plainT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} p\+Tensor\+::plainT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Plaintext Transpose. 
+
+Definition at line 422 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a7e80733ef047f170aec2c69d556728ad_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a7e80733ef047f170aec2c69d556728ad_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_ab2d48fc3929926dd4a4eae51764cdd95}\label{classp_tensor_ab2d48fc3929926dd4a4eae51764cdd95}} 
+\index{pTensor@{pTensor}!plainT@{plainT}}
+\index{plainT@{plainT}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{plainT()}{plainT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} p\+Tensor\+::plainT (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}}}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Static plaintext transpose 
+
+Definition at line 435 of file p\+\_\+tensor.\+cpp.
+
+\mbox{\Hypertarget{classp_tensor_aa2a8678b5f7fbbd0444636946039ed91}\label{classp_tensor_aa2a8678b5f7fbbd0444636946039ed91}} 
+\index{pTensor@{pTensor}!randomNormal@{randomNormal}}
+\index{randomNormal@{randomNormal}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{randomNormal()}{randomNormal()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::random\+Normal (\begin{DoxyParamCaption}\item[{unsigned int}]{rows,  }\item[{unsigned int}]{cols,  }\item[{int}]{low = {\ttfamily 0},  }\item[{int}]{high = {\ttfamily 1} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate a random\+Normal distribution tensor of (rows, cols) where each element is between \mbox{[}low, high) The user can specify whether to encrypt the result.
+
+Answers based on 
+\begin{DoxyParams}{Parameters}
+{\em rows} & Number of rows \\
+\hline
+{\em cols} & number of cols \\
+\hline
+{\em low} & minimum (inclusive) of the random normal values \\
+\hline
+{\em high} & maximum (exclusive) of the random normal values \\
+\hline
+{\em encrypted} & whether the result should be encrypted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 470 of file p\+\_\+tensor.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_aa2a8678b5f7fbbd0444636946039ed91_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a560f55ff492ccf2b3a8a993fc055863f}\label{classp_tensor_a560f55ff492ccf2b3a8a993fc055863f}} 
+\index{pTensor@{pTensor}!randomUniform@{randomUniform}}
+\index{randomUniform@{randomUniform}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{randomUniform()}{randomUniform()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::random\+Uniform (\begin{DoxyParamCaption}\item[{unsigned int}]{rows,  }\item[{unsigned int}]{cols,  }\item[{double}]{low = {\ttfamily 0.0},  }\item[{double}]{high = {\ttfamily 1.0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Generate a random\+Uniform tensor of (rows, cols) where each element is between \mbox{[}low, high) The user can specify whether to encrypt the result.
+
+Code based on \href{https://cplusplus.com/reference/random/uniform_real_distribution/}{\texttt{ https\+://cplusplus.\+com/reference/random/uniform\+\_\+real\+\_\+distribution/}} 
+\begin{DoxyParams}{Parameters}
+{\em rows} & Number of rows \\
+\hline
+{\em cols} & number of cols \\
+\hline
+{\em low} & minimum (inclusive) of the random\+Uniform values \\
+\hline
+{\em high} & maximum (exclusive) of the random\+Uniform values \\
+\hline
+{\em encrypted} & whether the result should be encrypted \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 455 of file p\+\_\+tensor.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a560f55ff492ccf2b3a8a993fc055863f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a1576ec18c9cfbc2333ee7b8341221fc1}\label{classp_tensor_a1576ec18c9cfbc2333ee7b8341221fc1}} 
+\index{pTensor@{pTensor}!shape@{shape}}
+\index{shape@{shape}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{shape()}{shape()}}
+{\footnotesize\ttfamily std\+::tuple$<$unsigned int, unsigned int$>$ p\+Tensor\+::shape (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return the shape of the matrix. 
+
+Definition at line 148 of file p\+\_\+tensor.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_a1576ec18c9cfbc2333ee7b8341221fc1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a7963717cc24031e12638905ac1c94943}\label{classp_tensor_a7963717cc24031e12638905ac1c94943}} 
+\index{pTensor@{pTensor}!sum@{sum}}
+\index{sum@{sum}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::sum (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Reduce along both axes. Basically sum up all the elements Some \#precomputation happens here that can be eventually disabled. \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 315 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classp_tensor_a7963717cc24031e12638905ac1c94943_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=273pt]{classp_tensor_a7963717cc24031e12638905ac1c94943_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_a82f05ba4ad0074ffc8f30e89b4f4ff09}\label{classp_tensor_a82f05ba4ad0074ffc8f30e89b4f4ff09}} 
+\index{pTensor@{pTensor}!sum@{sum}}
+\index{sum@{sum}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{sum()}{sum()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::sum (\begin{DoxyParamCaption}\item[{int}]{axis }\end{DoxyParamCaption})}
+
+Reduce either along the 0th (sum downwards. Equivalent to iterating and summing) or 1st axis (sum across rows)
+
+Some \#precomputation happens here that can be eventually disabled.
+
+
+\begin{DoxyParams}{Parameters}
+{\em axis} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 338 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classp_tensor_a82f05ba4ad0074ffc8f30e89b4f4ff09_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classp_tensor_ac120fe46e6371d6f4af47c86e6a2961f}\label{classp_tensor_ac120fe46e6371d6f4af47c86e6a2961f}} 
+\index{pTensor@{pTensor}!T@{T}}
+\index{T@{T}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{T()}{T()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classp_tensor}{p\+Tensor}} p\+Tensor\+::T (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Take the transpose of the encrypted matrix
+
+Some \#precomputation happens here that can eventually be disabled.
+
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+Definition at line 378 of file p\+\_\+tensor.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classp_tensor_ac120fe46e6371d6f4af47c86e6a2961f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{classp_tensor_ac120fe46e6371d6f4af47c86e6a2961f_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classp_tensor_a02ad15bfbf654fc17bc5ca96a8afbaf7}\label{classp_tensor_a02ad15bfbf654fc17bc5ca96a8afbaf7}} 
+\index{pTensor@{pTensor}!m\_cc@{m\_cc}}
+\index{m\_cc@{m\_cc}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{m\_cc}{m\_cc}}
+{\footnotesize\ttfamily lbcrypto\+::\+Crypto\+Context$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$ $\ast$ p\+Tensor\+::m\+\_\+cc = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+Author\+: Ian Quah Date\+: 12/22/20 
+
+Definition at line 56 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{classp_tensor_afd74c8ed7f93741aa41c40bdf599f9c0}\label{classp_tensor_afd74c8ed7f93741aa41c40bdf599f9c0}} 
+\index{pTensor@{pTensor}!m\_private\_key@{m\_private\_key}}
+\index{m\_private\_key@{m\_private\_key}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{m\_private\_key}{m\_private\_key}}
+{\footnotesize\ttfamily shared\+\_\+ptr$<$ lbcrypto\+::\+L\+P\+Private\+Key\+Impl$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$ $>$ p\+Tensor\+::m\+\_\+private\+\_\+key = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 58 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{classp_tensor_a36f21dfe5dc1531100b39cd4f2563303}\label{classp_tensor_a36f21dfe5dc1531100b39cd4f2563303}} 
+\index{pTensor@{pTensor}!m\_public\_key@{m\_public\_key}}
+\index{m\_public\_key@{m\_public\_key}!pTensor@{pTensor}}
+\doxysubsubsection{\texorpdfstring{m\_public\_key}{m\_public\_key}}
+{\footnotesize\ttfamily shared\+\_\+ptr$<$ lbcrypto\+::\+L\+P\+Public\+Key\+Impl$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$ $>$ p\+Tensor\+::m\+\_\+public\+\_\+key = nullptr\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 57 of file p\+\_\+tensor.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\mbox{\hyperlink{p__tensor_8h}{p\+\_\+tensor.\+h}}\item 
+src/\mbox{\hyperlink{p__tensor_8cpp}{p\+\_\+tensor.\+cpp}}\end{DoxyCompactItemize}

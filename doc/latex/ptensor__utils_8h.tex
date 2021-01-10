@@ -1,0 +1,66 @@
+\hypertarget{ptensor__utils_8h}{}\doxysection{src/ptensor\+\_\+utils.h File Reference}
+\label{ptensor__utils_8h}\index{src/ptensor\_utils.h@{src/ptensor\_utils.h}}
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+Include dependency graph for ptensor\+\_\+utils.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{ptensor__utils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{ptensor__utils_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_broadcast_error}{Broadcast\+Error}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename p\+Tensor $>$ }\\void \mbox{\hyperlink{ptensor__utils_8h_a3410d2a1412e4ef99776265a4594bfcd}{shape\+Verifier}} (const \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&first, const \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&second)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{ptensor__utils_8h_a3410d2a1412e4ef99776265a4594bfcd}\label{ptensor__utils_8h_a3410d2a1412e4ef99776265a4594bfcd}} 
+\index{ptensor\_utils.h@{ptensor\_utils.h}!shapeVerifier@{shapeVerifier}}
+\index{shapeVerifier@{shapeVerifier}!ptensor\_utils.h@{ptensor\_utils.h}}
+\doxysubsubsection{\texorpdfstring{shapeVerifier()}{shapeVerifier()}}
+{\footnotesize\ttfamily template$<$typename p\+Tensor $>$ \\
+void shape\+Verifier (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&}]{first,  }\item[{const \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \&}]{second }\end{DoxyParamCaption})}
+
+Verify that the shape of the incoming arguments are correct. Used to verify if two p\+Tensors are valid in terms of being operated on. 
+\begin{DoxyParams}{Parameters}
+{\em first} & \+: first \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \\
+\hline
+{\em second} & \+: second \mbox{\hyperlink{classp_tensor}{p\+Tensor}} \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+None, but throws an error 
+\end{DoxyReturn}
+
+
+Definition at line 53 of file ptensor\+\_\+utils.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=287pt]{ptensor__utils_8h_a3410d2a1412e4ef99776265a4594bfcd_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{ptensor__utils_8h_a3410d2a1412e4ef99776265a4594bfcd_icgraph}
+\end{center}
+\end{figure}

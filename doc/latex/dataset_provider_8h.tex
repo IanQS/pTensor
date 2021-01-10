@@ -1,0 +1,57 @@
+\hypertarget{dataset_provider_8h}{}\doxysection{src/dataset\+Provider.h File Reference}
+\label{dataset_provider_8h}\index{src/datasetProvider.h@{src/datasetProvider.h}}
+{\ttfamily \#include \char`\"{}p\+\_\+tensor.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$algorithm$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+Include dependency graph for dataset\+Provider.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dataset_provider_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{dataset_provider_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classdataset_provider}{dataset\+Provider}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{dataset_provider_8h_ad9dbe6f41dd538968166d2007f780ae5}{training\+Pair}} = std\+::tuple$<$ \mbox{\hyperlink{classp_tensor}{p\+Tensor}}, \mbox{\hyperlink{classp_tensor}{p\+Tensor}} $>$
+\item 
+using \mbox{\hyperlink{dataset_provider_8h_ad4de801d7c46080723f7e3dfb6b02f67}{provided\+Dataset}} = std\+::vector$<$ \mbox{\hyperlink{dataset_provider_8h_ad9dbe6f41dd538968166d2007f780ae5}{training\+Pair}} $>$
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{dataset_provider_8h_ad4de801d7c46080723f7e3dfb6b02f67}\label{dataset_provider_8h_ad4de801d7c46080723f7e3dfb6b02f67}} 
+\index{datasetProvider.h@{datasetProvider.h}!providedDataset@{providedDataset}}
+\index{providedDataset@{providedDataset}!datasetProvider.h@{datasetProvider.h}}
+\doxysubsubsection{\texorpdfstring{providedDataset}{providedDataset}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{dataset_provider_8h_ad4de801d7c46080723f7e3dfb6b02f67}{provided\+Dataset}} =  std\+::vector$<$\mbox{\hyperlink{dataset_provider_8h_ad9dbe6f41dd538968166d2007f780ae5}{training\+Pair}}$>$}
+
+
+
+Definition at line 16 of file dataset\+Provider.\+h.
+
+\mbox{\Hypertarget{dataset_provider_8h_ad9dbe6f41dd538968166d2007f780ae5}\label{dataset_provider_8h_ad9dbe6f41dd538968166d2007f780ae5}} 
+\index{datasetProvider.h@{datasetProvider.h}!trainingPair@{trainingPair}}
+\index{trainingPair@{trainingPair}!datasetProvider.h@{datasetProvider.h}}
+\doxysubsubsection{\texorpdfstring{trainingPair}{trainingPair}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{dataset_provider_8h_ad9dbe6f41dd538968166d2007f780ae5}{training\+Pair}} =  std\+::tuple$<$\mbox{\hyperlink{classp_tensor}{p\+Tensor}}, \mbox{\hyperlink{classp_tensor}{p\+Tensor}}$>$}
+
+Author\+: Ian Quah Date\+: 1/8/21
+
+Requires that the dataset is organized according to (\#samples, \#features) which allows us to index into and shuffle rows around. 
+
+Definition at line 15 of file dataset\+Provider.\+h.
+

@@ -1,0 +1,134 @@
+\hypertarget{p__tensor_8h}{}\doxysection{src/p\+\_\+tensor.h File Reference}
+\label{p__tensor_8h}\index{src/p\_tensor.h@{src/p\_tensor.h}}
+{\ttfamily \#include \char`\"{}palisade.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$tuple$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$exception$>$}\newline
+{\ttfamily \#include $<$complex$>$}\newline
+{\ttfamily \#include \char`\"{}ptensor\+\_\+utils.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$cassert$>$}\newline
+{\ttfamily \#include $<$random$>$}\newline
+Include dependency graph for p\+\_\+tensor.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{p__tensor_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{p__tensor_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classp_tensor}{p\+Tensor}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{p__tensor_8h_aeb303144b56d8786115c3dcaf892b8ba}{cipher\+Vector}} = lbcrypto\+::\+Ciphertext$<$ lbcrypto\+::\+D\+C\+R\+T\+Poly $>$
+\item 
+using \mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} = std\+::vector$<$ \mbox{\hyperlink{p__tensor_8h_aeb303144b56d8786115c3dcaf892b8ba}{cipher\+Vector}} $>$
+\item 
+using \mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} = std\+::complex$<$ double $>$
+\item 
+using \mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} = std\+::vector$<$ \mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} $>$
+\item 
+using \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} = std\+::vector$<$ \mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} $>$
+\item 
+using \mbox{\hyperlink{p__tensor_8h_a5dd1cf099c04cbf24f8f0b100a21e7f8}{real\+Scalar}} = double
+\item 
+using \mbox{\hyperlink{p__tensor_8h_a40254158a876c351b3c747b7fd85fb48}{real\+Vector}} = std\+::vector$<$ \mbox{\hyperlink{p__tensor_8h_a5dd1cf099c04cbf24f8f0b100a21e7f8}{real\+Scalar}} $>$
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}\label{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}} 
+\index{p\_tensor.h@{p\_tensor.h}!cipherTensor@{cipherTensor}}
+\index{cipherTensor@{cipherTensor}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{cipherTensor}{cipherTensor}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_ad1fed3df4c4a81ac1da6b7286515b79d}{cipher\+Tensor}} =  std\+::vector$<$\mbox{\hyperlink{p__tensor_8h_aeb303144b56d8786115c3dcaf892b8ba}{cipher\+Vector}}$>$}
+
+
+
+Definition at line 44 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{p__tensor_8h_aeb303144b56d8786115c3dcaf892b8ba}\label{p__tensor_8h_aeb303144b56d8786115c3dcaf892b8ba}} 
+\index{p\_tensor.h@{p\_tensor.h}!cipherVector@{cipherVector}}
+\index{cipherVector@{cipherVector}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{cipherVector}{cipherVector}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_aeb303144b56d8786115c3dcaf892b8ba}{cipher\+Vector}} =  lbcrypto\+::\+Ciphertext$<$lbcrypto\+::\+D\+C\+R\+T\+Poly$>$}
+
+Author\+: Ian Quah Date\+: 18 Dec
+
+\{Although the name may suggest it, we only support rank 2 tensors and below For the most part we try and mimic the numpy interface as closely as possible.
+
+1) N\+O\+TE\+: we always require that the L\+HS is a ciphertext. The R\+HS may be either a ciphertext or raw message E.\+g in x -\/ y x + y x must be a ciphertext and y can be either a ciphertext or raw message
+
+For now we only return an encrypted tensor. We will (maybe) support other types in the future
+
+2) We don\textquotesingle{}t distinguish between a scalar or a vector in the encrypted sense as we just have a ciphertext. We do, however, have a concept of a vector of ciphertexts which we call a ciphertext matrix
+
+3) If we are passed in a message we by-\/default also generate the transpose (which is then encrypted). So, by default all p\+Tensors which are passed in plaintexts will have their encrypted transpose for free. We also provide a function to generate the transpose for encrypted matrices but it is much slower. \} Main Palisade Tensor class
+\begin{DoxyItemize}
+\item We need to initialize a static member before doing any of the operations 
+\end{DoxyItemize}
+
+Definition at line 43 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}\label{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}} 
+\index{p\_tensor.h@{p\_tensor.h}!messageScalar@{messageScalar}}
+\index{messageScalar@{messageScalar}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{messageScalar}{messageScalar}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}} =  std\+::complex$<$double$>$}
+
+
+
+Definition at line 46 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}\label{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}} 
+\index{p\_tensor.h@{p\_tensor.h}!messageTensor@{messageTensor}}
+\index{messageTensor@{messageTensor}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{messageTensor}{messageTensor}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_a91c5a858f85b10a98f884f2394614da9}{message\+Tensor}} =  std\+::vector$<$\mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}}$>$}
+
+
+
+Definition at line 48 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}\label{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}} 
+\index{p\_tensor.h@{p\_tensor.h}!messageVector@{messageVector}}
+\index{messageVector@{messageVector}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{messageVector}{messageVector}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_a2ba5b9a9567a9118e203e99173b24457}{message\+Vector}} =  std\+::vector$<$\mbox{\hyperlink{p__tensor_8h_a1826f4b4f40f2c40c63a8ce3daa1580e}{message\+Scalar}}$>$}
+
+
+
+Definition at line 47 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{p__tensor_8h_a5dd1cf099c04cbf24f8f0b100a21e7f8}\label{p__tensor_8h_a5dd1cf099c04cbf24f8f0b100a21e7f8}} 
+\index{p\_tensor.h@{p\_tensor.h}!realScalar@{realScalar}}
+\index{realScalar@{realScalar}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{realScalar}{realScalar}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_a5dd1cf099c04cbf24f8f0b100a21e7f8}{real\+Scalar}} =  double}
+
+
+
+Definition at line 50 of file p\+\_\+tensor.\+h.
+
+\mbox{\Hypertarget{p__tensor_8h_a40254158a876c351b3c747b7fd85fb48}\label{p__tensor_8h_a40254158a876c351b3c747b7fd85fb48}} 
+\index{p\_tensor.h@{p\_tensor.h}!realVector@{realVector}}
+\index{realVector@{realVector}!p\_tensor.h@{p\_tensor.h}}
+\doxysubsubsection{\texorpdfstring{realVector}{realVector}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{p__tensor_8h_a40254158a876c351b3c747b7fd85fb48}{real\+Vector}} =  std\+::vector$<$\mbox{\hyperlink{p__tensor_8h_a5dd1cf099c04cbf24f8f0b100a21e7f8}{real\+Scalar}}$>$}
+
+
+
+Definition at line 51 of file p\+\_\+tensor.\+h.
+

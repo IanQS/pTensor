@@ -2,7 +2,8 @@
  * Author: Ian Quah
  * Date: 18 Dec
  *
- * Although the name may suggest it, we only support rank 2 tensors and below
+ *
+ * \details{Although the name may suggest it, we only support rank 2 tensors and below
  * For the most part we try and mimic the numpy interface as closely as possible.
  *
  * 1) NOTE: we always require that the LHS is a ciphertext. The RHS may be either a ciphertext or raw message
@@ -19,6 +20,7 @@
  *  3) If we are passed in a message we by-default also generate the transpose (which is then encrypted). So, by default
  *      all pTensors which are passed in plaintexts will have their encrypted transpose for free. We also provide a function
  *      to generate the transpose for encrypted matrices but it is much slower.
+ *  }
  */
 #ifndef PTENSOR_P_TENSOR_H
 #define PTENSOR_P_TENSOR_H
