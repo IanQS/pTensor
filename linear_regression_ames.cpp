@@ -66,8 +66,8 @@ int main() {
     //  - We discuss the crypto hyperparameters in the next post
     /////////////////////////////////////////////////////////////////
     unsigned int epochs = 50;
-    int numFolds = 0;  // If 0, we just run GD on entire dataset in same order every epoch
-    float _alpha = 0.1;
+    int numFolds = 2;  // If 0, we just run GD on entire dataset in same order every epoch
+    float _alpha = 0.01;
     messageTensor alpha = {{_alpha}};
 
     uint8_t multDepth = 7;
