@@ -23,3 +23,20 @@ bool messageTensorEq(messageTensor arg1, messageTensor arg2) {
     }
     return true;
 }
+
+bool unorderedMessageTensorEq(messageTensor a1, messageTensor a2){
+    std::unordered_set<double> s1;
+    std::copy(a1.begin(),
+              a1.end(),
+              std::inserter(a1, a1.begin()));
+
+    std::unordered_set<double> s2;
+    std::copy(a2.begin(),
+              a2.end(),
+              std::inserter(a2, a2.begin()));
+
+    if (s1 == s2){
+        return true;
+    }
+    return false;
+}

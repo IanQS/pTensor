@@ -1,6 +1,9 @@
 /**
  * Author: Ian Quah
- * Date: 1/8/21 
+ * Date: 1/8/21
+ *
+ * Note: we do an unordered Tensor eq because we shuffle between the rows BEFORE taking the transpose and doing the packing
+ * Thus, we don't know the order in which they are packed.
  */
 
 #include "gtest/gtest.h"
@@ -22,7 +25,7 @@ class pTensor_datasetProvider : public ::testing::Test {
   messageTensor msgY = {{1}, {2}, {3}};
 
   pTensor X = pTensor(3, 3, msgX);
-  pTensor y = pTensor(1, 3, msgY);
+  pTensor y = pTensor(3, 1, msgY);
 
   void SetUp() {
       uint8_t multDepth = 4;
@@ -83,8 +86,8 @@ TEST_F(pTensor_datasetProvider, testProvide) {
         auto yShape = shuffledY.shape();
 
         EXPECT_EQ(
-            std::get<0>(xShape),
-            std::get<0>(yShape)
+            std::get<1>(xShape),
+            std::get<1>(yShape)
         );
 
         EXPECT_EQ(shuffledX.messageNotEmpty(), true);
@@ -94,19 +97,19 @@ TEST_F(pTensor_datasetProvider, testProvide) {
 
         auto yMessages = shuffledY.getMessage();
         auto xMessages = shuffledX.getMessage();
-        for (unsigned int r = 0; r < std::get<0>(xShape); ++r) {
 
-            EXPECT_EQ(yMessages[r].size(), 1);
-            std::complex<double> label = yMessages[r][0];
+        // We know that since we transposed it, there is only 1 row and 3 elements
+        EXPECT_EQ(yMessages[0].size(), 3);
+        for (unsigned int r = 0; r < std::get<0>(xShape); ++r) {
+            std::complex<double> label = yMessages[0][r];
             auto labelAsInt = static_cast<int>(label.real());
             if (labelAsInt == 1) {
-                EXPECT_TRUE(messageTensorEq({xMessages[r]}, {{1, 2, 3}}));
+                EXPECT_TRUE(unorderedMessageTensorEq({xMessages[r]}, {{1, 4, 7}}));
             } else if (labelAsInt == 2) {
-                EXPECT_TRUE(messageTensorEq({xMessages[r]}, {{4, 5, 6}}));
+                EXPECT_TRUE(unorderedMessageTensorEq({xMessages[r]}, {{2, 5, 8}}));
             } else {
-                EXPECT_TRUE(messageTensorEq({xMessages[r]}, {{7, 8, 9}}));
+                EXPECT_TRUE(unorderedMessageTensorEq({xMessages[r]}, {{3, 6, 9}}));
             }
         }
     }
-
 };

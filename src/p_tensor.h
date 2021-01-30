@@ -412,8 +412,8 @@ class pTensor {
    */
   static pTensor generateWeights(unsigned int numFeatures,
                                  unsigned int numRepeats,
-                                 const messageTensor &seed,
-                                 const std::string &randomInitializer = "");
+                                 const messageTensor &seed = {},
+                                 const std::string &randomInitializer = "normal");
 
   /**
    * Vertically stack the tensors.
