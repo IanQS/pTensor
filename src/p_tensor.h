@@ -517,15 +517,18 @@ class pTensor {
   template<class numericalScalar>
   static pTensor encryptScalar(numericalScalar value, bool encrypt=false) {
       messageVector asVector = {value};
-      cipherVector container = (*m_cc)->Encrypt(
-          m_public_key,
-          (*m_cc)->MakeCKKSPackedPlaintext(asVector)
-      );
-      cipherTensor tensorContainer = {container};
-      pTensor newTensor = pTensor(1, 1, tensorContainer);
+
       if (encrypt){
-          return newTensor.encrypt();
+          cipherVector container = (*m_cc)->Encrypt(
+              m_public_key,
+              (*m_cc)->MakeCKKSPackedPlaintext(asVector)
+          );
+          cipherTensor tensorContainer = {container};
+          pTensor newTensor = pTensor(1, 1, tensorContainer);
+          return newTensor;
       }
+      messageTensor asTensor = {asVector};
+      pTensor newTensor(1, 1, asTensor);
       return newTensor;
   }
 

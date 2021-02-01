@@ -99,7 +99,6 @@ int main() {
 
     auto numObservations = ptxtX.size();
     auto numFeatures = ptxtX[0].size();
-    messageTensor _scaleByNumSamples = {{numObservations}};
 
     /////////////////////////////////////////////////////////////////
     // Create the crypto parameters
@@ -121,8 +120,14 @@ int main() {
     cc->EvalSumKeyGen(keys.secretKey);
 
     int ringDim = cc->GetRingDimension();
+
+    if (batchSize!= ringDim / 2){
+        std::cout << "error, adjust batchsize to be ring_dimension/2" << std::endl;
+    }
     int rot = int(-ringDim / 4) + 1;
     cc->EvalAtIndexKeyGen(keys.secretKey, {-1, 1, rot});
+
+
 
     shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> public_key;
     shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> private_key;
@@ -132,6 +137,8 @@ int main() {
     auto t2 = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
     std::cout << "Generating crypto parameters took " << duration * 1e-6 << " seconds" << std::endl;
+
+
 
     /////////////////////////////////////////////////////////////////
     // Setting up the dataset and the training
@@ -173,7 +180,7 @@ int main() {
     /////////////////////////////////////////////////////////////////
     auto alpha = pTensor::encryptScalar(_alpha, true);
     auto l2Scale = pTensor::encryptScalar(_l2_regularization_factor, true);
-    auto scaleByNumSamples = pTensor::encryptScalar(1 / numObservations, true);
+    auto scaleByNumSamples = pTensor::encryptScalar(static_cast<double>(1.0 / numObservations), true);
 
     auto w = weights.encrypt();
 

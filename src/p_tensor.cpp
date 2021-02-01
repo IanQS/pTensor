@@ -542,10 +542,10 @@ pTensor pTensor::encryptedDot(pTensor &other) {
     return dot(other);
 }
 
-pTensor pTensor::getDiagonal(const pTensor& matrix, bool asRowVector ) {
+pTensor pTensor::getDiagonal(const pTensor &matrix, bool asRowVector) {
     throw NotImplementedException();
     assert (matrix.isMatrix());
-    if (asRowVector){
+    if (asRowVector) {
         // We mask out all but the row of interest then accumulate into a row vector
         messageVector _container(matrix.m_cols, 0);
         cipherVector vectorContainer = (*m_cc)->Encrypt(
@@ -553,7 +553,7 @@ pTensor pTensor::getDiagonal(const pTensor& matrix, bool asRowVector ) {
             (*m_cc)->MakeCKKSPackedPlaintext(_container));
 
         int diagIndex = 0;
-        for (auto &v: matrix.m_ciphertexts){
+        for (auto &v: matrix.m_ciphertexts) {
             messageVector mask(matrix.m_cols, 0);
             mask[diagIndex] = 1;
             auto ptMask = (*m_cc)->MakeCKKSPackedPlaintext(mask);
@@ -581,13 +581,42 @@ pTensor pTensor::applyGradient(pTensor matrixOfWeights, pTensor vectorGradients)
     // vectorGradients shape: (1, #features)
 
     // We first iteratively mask out the gradients which produces a diagonal(all non-zeros empty) matrix. We then
-    // rotate the vectors so that the first entry is the value of interest before repeating it.
+    // rotate the vectors so that the last entry is the value of interest. We then sum it (which repeats the vector) and rotate the entire vector back
 
     pTensor identity = pTensor::identity(vectorGradients.m_cols);
     pTensor encryptedIdentity = identity.encrypt();
-    for (auto &row: encryptedIdentity)
+    cipherTensor tensorCipherContainer;
+    auto maskedGradients = encryptedIdentity * vectorGradients;
 
-    cipherTensor matrixGradient;
+    lbcrypto::Plaintext pt;
+    int index=0;
+    int ringDim = (*m_cc)->GetRingDimension();
+    int rot = int(-ringDim / 4) + 1;
 
-    return pTensor();
+    for (auto &row: maskedGradients.m_ciphertexts) {
+        auto maskedVal = row;
+        for (int i = 0; i < (index + 1); ++i) {
+            maskedVal = (*m_cc)->EvalAtIndex(maskedVal, 1);
+        }
+        maskedVal = (*m_cc)->EvalSum(maskedVal, -rot);
+        maskedVal = (*m_cc)->EvalAtIndex(maskedVal, rot);
+
+        (*m_cc)->Decrypt(m_private_key, maskedVal, &pt);
+        pt->SetLength(10);
+        pt->GetCKKSPackedValue();
+        std::cout << pt << std::endl;
+
+        tensorCipherContainer.emplace_back(maskedVal);
+        index += 1;
+        std::cout << "****************" << std::endl;
+    }
+
+    // MatrixGradients is a repeated matrix
+    pTensor matrixGradients(matrixOfWeights.m_rows, matrixOfWeights.m_cols, tensorCipherContainer);
+
+    messageTensor debug;
+    auto toReturn = matrixOfWeights - matrixGradients;
+
+    debug = toReturn.decrypt().getMessage();
+    return toReturn;
 }
