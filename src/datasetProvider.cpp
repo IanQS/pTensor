@@ -43,6 +43,7 @@ providedDataset datasetProvider::provide(int randomState, bool encrypt) {
     rng.seed(randomState);
 
     providedDataset container;
+    std::string mode = (encrypt) ? "encrypted fold": "plaintext fold";
     for (unsigned int i = 0; i < m_numFolds; i++) {
         std::shuffle(std::begin(indices), std::end(indices), rng);
         messageTensor shuffledXMessages;
@@ -56,22 +57,40 @@ providedDataset datasetProvider::provide(int randomState, bool encrypt) {
             shuffledYMessages.emplace_back(originalYMessages[ind]);
         }
 
-        pTensor pTensorShuffledX(numberOfRows, numberOfCols, shuffledXMessages);
-        pTensor pTensorShuffledY(numberOfRows, 1, shuffledYMessages);
+        auto shuffledXT = pTensor::plainT(shuffledXMessages);
+        auto shuffledYT = pTensor::plainT(shuffledYMessages);
+        pTensor pTensorShuffledX(numberOfCols, numberOfRows, shuffledXT);
+        pTensor pTensorShuffledY(1, numberOfRows, shuffledYT);
 
-        if (encrypt) {
-            auto encryptedX = pTensorShuffledX.encrypt();
-            auto encryptedY = pTensorShuffledY.encrypt();
-            container.emplace_back(
-                std::make_tuple(encryptedX, encryptedY)
-            );
-        } else {
-            container.emplace_back(
-                std::make_tuple(pTensorShuffledX, pTensorShuffledY)
-            );
-
-        }
-
+        container.emplace_back(
+            std::make_tuple(pTensorShuffledX, pTensorShuffledY)
+        );
+    }
+    if (encrypt){
+        return encryptDataset(container);
     }
     return container;
+}
+providedDataset datasetProvider::encryptDataset(const providedDataset& toBeEncrypted) {
+
+    auto t1 = std::chrono::high_resolution_clock::now();
+    auto t2 = std::chrono::high_resolution_clock::now();
+    providedDataset encryptedContainer;
+    int counter = 1;
+    for (auto &dataPair: toBeEncrypted){
+        t1 = std::chrono::high_resolution_clock::now();
+        auto X = std::get<0>(dataPair);
+        auto encX = X.encrypt();
+
+        auto y = std::get<1>(dataPair);
+        auto ency = y.encrypt();
+
+        encryptedContainer.emplace_back(std::make_tuple(encX, ency));
+
+        t2 = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();
+        std::cout << "Took " << duration * 1e-6 << " seconds to encrypt fold " << counter << "/" << toBeEncrypted.size() << std::endl;
+        counter += 1;
+    }
+    return encryptedContainer;
 }

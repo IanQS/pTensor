@@ -50,14 +50,14 @@ link_libraries(${PALISADE_LIBRARIES})
 
 # Actual execution
 add_executable(palisade_ML
-        main.cpp
+        linear_regression_ames.cpp
         src/p_tensor.h src/p_tensor.cpp
         src/datasetProvider.h src/datasetProvider.cpp
         src/ptensor_utils.h
-        )
+        src/csv_reader.cpp src/csv_reader.h)
 
 add_executable(ml_proof_of_concept
-        main_proof_of_concept.cpp
+        gradient_descent_single_step.cpp
         src/p_tensor.h src/p_tensor.cpp
         src/datasetProvider.h src/datasetProvider.cpp
         src/ptensor_utils.h

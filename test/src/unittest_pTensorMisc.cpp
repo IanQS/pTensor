@@ -192,23 +192,23 @@ TEST_F(pTensor_TensorMisc, TestTransposeEnc) {
     auto tensor = t1.encrypt();
     auto vector = t2.encrypt();
 
-    auto transposedTensor = tensor.T();
-    auto transposedVector = vector.T();
+    EXPECT_ANY_THROW(tensor.T());
+    EXPECT_ANY_THROW(vector.T());
 
-    auto decTensorTransposed = transposedTensor.decrypt();
-    auto decVectorTransposed = transposedVector.decrypt();
-
-    EXPECT_TRUE(
-        messageTensorEq(
-            decTensorTransposed.getMessage(),
-            expectedTensorTranspose)
-    );
-
-    EXPECT_TRUE(
-        messageTensorEq(
-            decVectorTransposed.getMessage(),
-            expectedVectorTranspose)
-    );
+//    auto decTensorTransposed = transposedTensor.decrypt();
+//    auto decVectorTransposed = transposedVector.decrypt();
+//
+//    EXPECT_TRUE(
+//        messageTensorEq(
+//            decTensorTransposed.getMessage(),
+//            expectedTensorTranspose)
+//    );
+//
+//    EXPECT_TRUE(
+//        messageTensorEq(
+//            decVectorTransposed.getMessage(),
+//            expectedVectorTranspose)
+//    );
 
 }
 TEST_F(pTensor_TensorMisc, DISABLED_TestSum) {

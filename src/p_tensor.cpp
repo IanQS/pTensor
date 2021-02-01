@@ -18,17 +18,7 @@ pTensor pTensor::encrypt() {
         ct.emplace_back(resp);
     }
 
-    // modify
-    cipherTensor ctT;
-    messageTensor transposedTensor = pTensor::plainT();
-
-    for (auto &vec: transposedTensor) {
-        lbcrypto::Plaintext packedPT = (*m_cc)->MakeCKKSPackedPlaintext(vec);
-        auto resp = (*m_cc)->Encrypt(m_public_key, packedPT);
-        ctT.emplace_back(resp);
-    }
-
-    pTensor newTensor(m_rows, m_cols, ct, ctT);
+    pTensor newTensor(m_rows, m_cols, ct);
     newTensor.m_isEncrypted = true;
     return newTensor;
 }
@@ -252,13 +242,6 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
     assert (m_cc != nullptr && (cipherNotEmpty())
                 && (other.messageNotEmpty() || other.cipherNotEmpty()));
 
-    if (isMatrix() && other.isMatrix()) {
-        // First do a hadamard prod
-        auto elementWiseProd = (*this) * other;
-        auto summed = elementWiseProd.sum(0);
-        return summed;
-    }
-
     pTensor rhs;
     if (m_cols == other.m_rows) { // we need to transpose to get it into a form amenable for our dot prod.
         rhs = other.T();
@@ -315,8 +298,14 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
 pTensor pTensor::sum() {
 
     assert (m_cc != nullptr && (cipherNotEmpty()));
-    auto colSummedpTensor =    //We now have values summed across the rows.
-        sum(1);  // The first el is of interest. We then sum downwards
+    auto colSummedpTensor = sum(1);  // Now a col Vector but m_cols times larger
+
+    if (m_isRepeated){
+        float _scale = 1.0 / m_cols;
+        auto scale = pTensor::encryptScalar(_scale, true);
+        colSummedpTensor = colSummedpTensor * scale;
+    }
+
     messageVector message_accumulator(1, 0.0); // we initialize to 0
 
     // Accumulator is a vector
@@ -377,19 +366,11 @@ pTensor pTensor::sum(int axis) {
 
 pTensor pTensor::T() {
     // For the first row we iteratively mask out
+
     if (!(m_isEncrypted)) { // encrypt yourself. If we store the transpose we have it now in encrypted form.
         pTensor::encrypt();
     }
 
-    // At this point, our m_TCiphertexts is either empty or not empty. If not empty, the user either didn't
-    // want to encrypt it from the get-go OR we were passed in a ciphertext directly. In that case, we do
-    // the slow encrypted transpose.
-    // If NOT empty, we have the transpose that we return.
-    if (!m_TCiphertexts.empty()) {
-        // we flip the rows and cols. We then reassign
-        pTensor newTensor(m_cols, m_rows, m_TCiphertexts, m_ciphertexts);
-        return newTensor;
-    }
     // Whelp, we need to transpose here I suppose.
     // We fix a column then iterate downwards through the samples. At the end, we have a vector
     // at which point we emplace back then move to the next col
@@ -424,7 +405,7 @@ messageTensor pTensor::plainT() {
     messageTensor
         transposeTensor((m_messages)[0].size(), messageVector());  // we take the transpose and "store" it.
 
-    for (auto & m_message : m_messages) {
+    for (auto &m_message : m_messages) {
         for (unsigned int j = 0; j < (m_messages)[0].size(); j++) {
             transposeTensor[j].emplace_back(m_message[j]);
         }
@@ -489,6 +470,7 @@ pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
             (arg1.cipherNotEmpty() && arg2.cipherNotEmpty())
     );
     assert(arg1.m_cols == arg2.m_cols);
+    assert(arg1.m_isEncrypted == arg2.m_isEncrypted);
 
     if (arg1.messageNotEmpty()) {
         messageTensor container = arg1.m_messages;
@@ -505,7 +487,7 @@ pTensor pTensor::hstack(pTensor arg1, pTensor arg2) {
     }
 
     pTensor newTensor(arg1.m_rows + arg2.m_rows, arg1.m_cols, container);
-
+    newTensor.m_isEncrypted = (arg1.m_isEncrypted == arg2.m_isEncrypted);
     return newTensor;
 }
 pTensor pTensor::generateWeights(unsigned int numFeatures,
@@ -520,14 +502,15 @@ pTensor pTensor::generateWeights(unsigned int numFeatures,
             repeatedWeights.emplace_back(messageVector(numRepeats, vector[0]));
         }
         pTensor newTensor(numFeatures, numRepeats, repeatedWeights);
+        newTensor.m_isRepeated = true;
         return newTensor;
     } else {
         pTensor container;
         if (randomInitializer == "uniform") {
-            container = randomUniform(numFeatures, 1);
+            container = randomUniform(numFeatures, numRepeats);
 
         } else if (randomInitializer == "normal") {
-            container = randomNormal(numFeatures, 1);
+            container = randomNormal(numFeatures, numRepeats);
 
         } else {
             std::string errMsg = "Given unrecognized randomInitializer distribution: " + randomInitializer;
@@ -539,7 +522,64 @@ pTensor pTensor::generateWeights(unsigned int numFeatures,
         for (auto &vec: msg) {
             repeatedWeights.emplace_back(messageVector(numRepeats, vec[0]));
         }
+        container.m_isRepeated = true;
         container.m_messages = repeatedWeights;
         return container;
     }
+}
+pTensor pTensor::encryptedDot(pTensor &other) {
+    if (!(isMatrix())) {
+        throw std::runtime_error("Expected self to be a matrix in encryptedDot");
+    }
+
+    // More efficient to do it this way since our weights are a repeated matrix anyways
+    if (other.isMatrix()) {
+        if (shape() != other.shape()) {
+            std::string
+                errMsg = "Given other matrix that is not the same shape of self in matrix-matrix encrypted product";
+            throw std::runtime_error(errMsg);
+        }
+        // First do a hadamard prod
+        auto elementWiseProd = (*this) * other;
+
+        auto summed = elementWiseProd.sum(0);
+        return summed;
+    }
+    return dot(other);
+}
+
+pTensor pTensor::applyGradient(pTensor matrixOfWeights, pTensor vectorGradients) {
+    // matrixOfWeights shape: (# features, #observations), a repeated matrix essentially having shape (#features, 1)
+    // vectorGradients shape: (1, #features)
+
+    // We first iteratively mask out the gradients which produces a diagonal(all non-zeros empty) matrix. We then
+    // rotate the vectors so that the last entry is the value of interest. We then sum it (which repeats the vector) and rotate the entire vector back
+
+    pTensor identity = pTensor::identity(vectorGradients.m_cols);
+    pTensor encryptedIdentity = identity.encrypt();
+    cipherTensor tensorCipherContainer;
+    auto maskedGradients = encryptedIdentity * vectorGradients;
+
+    lbcrypto::Plaintext pt;
+    int index = 0;
+    int ringDim = (*m_cc)->GetRingDimension();
+    int rot = int(-ringDim / 4) + 1;
+
+    for (auto &row: maskedGradients.m_ciphertexts) {
+        auto maskedVal = row;
+        for (int i = 0; i < (index + 1); ++i) {
+            maskedVal = (*m_cc)->EvalAtIndex(maskedVal, 1);
+        }
+        maskedVal = (*m_cc)->EvalSum(maskedVal, -rot);
+        maskedVal = (*m_cc)->EvalAtIndex(maskedVal, rot);
+        tensorCipherContainer.emplace_back(maskedVal);
+        index += 1;
+    }
+
+    // MatrixGradients is a repeated matrix
+    pTensor matrixGradients(matrixOfWeights.m_rows, matrixOfWeights.m_cols, tensorCipherContainer);
+
+    auto toReturn = matrixOfWeights - matrixGradients;
+
+    return toReturn;
 }

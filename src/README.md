@@ -11,3 +11,5 @@
     -[ ] outer product
   
     -[ ] Allow passing of random seed to random engine in randomX functions
+  
+    -[ ] Make Diag and get Diag

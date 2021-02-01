@@ -61,15 +61,6 @@ void shapeVerifier(const pTensor &first, const pTensor &second) {
     bool col_same_size = (firstCols == secCols);  // if same size in the cols, no need to stretch
     bool col_stretchable = (firstCols == 1) || (secCols == 1); // only dimensions of size 1 can be stretched
 
-    // We overwrite the values of col_same_size and col_stretchable
-    // We can do this because it doesn't matter what the number of cols are
-    // in the encrypted-{encrypted/ message} setting as we always just take the max
-    // of the two and decrypt on that when we are done.
-    // If we accepted plaintexts on both sides then we would
-    // need to use the above
-    col_same_size = true;
-    col_stretchable = true;
-
     // if either of those is true we then check the rows
     bool row_same_size = (firstRows == secRows);
     bool row_stretchable = (firstRows == 1) || (secRows == 1); // only dimensions of size 1 can be stretched
