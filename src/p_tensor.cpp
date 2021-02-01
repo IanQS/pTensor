@@ -73,7 +73,6 @@ cipherTensor pTensor::binaryOpAbstraction(const char *flag,
 
     // Now, we know that it is broadcast-able. Therefore, they either have the same shape or one is shape 1 in rows
     cipherVector op_res;
-    int ringDim = (*m_cc)->GetRingDimension();
     for (unsigned int i = 0; i < std::max(m_rows, other.m_rows); i++) {
         unsigned int lhsInd;
         unsigned int rhsInd;
@@ -95,11 +94,10 @@ cipherTensor pTensor::binaryOpAbstraction(const char *flag,
             if (other.isScalar() && !(other.m_isRepeated)) {
 
                 // Get how much to sum over and rotate.
-                int rot = int(-ringDim / 4) + 1;
                 // We've now summed it up and it should be projected into the back
-                otherVec = (*m_cc)->EvalSum(other.m_ciphertexts[0], -rot);
+                otherVec = (*m_cc)->EvalSum(other.m_ciphertexts[0], -getRepeatBatchSize());
                 // The last rot entries are now populated with the value. We then rotate them back and we are done.
-                otherVec = (*m_cc)->EvalAtIndex(otherVec, rot);
+                otherVec = (*m_cc)->EvalAtIndex(otherVec, getRepeatBatchSize());
 
             } else {
                 otherVec = other.m_ciphertexts[rhsInd];
@@ -268,7 +266,7 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
         auto innerProd = (*m_cc)->EvalInnerProduct(
             m_ciphertexts[i],
             rhs.m_ciphertexts[HARDCODED_INDEX_FOR_OTHER_VECTOR],
-            ((*m_cc)->GetRingDimension() / 4));
+            getBatchSize());
 
         innerProd = (*m_cc)->EvalMult(innerProd, mask);
 
@@ -350,7 +348,7 @@ pTensor pTensor::sum(int axis) {
         // Sum across the rows
         cipherTensor accumulator;
         for (const auto &item : m_ciphertexts) {
-            auto resp = (*m_cc)->EvalSum(item, (*m_cc)->GetRingDimension() / 4);
+            auto resp = (*m_cc)->EvalSum(item, getBatchSize());
             accumulator.emplace_back(resp);
         }
 
@@ -562,16 +560,14 @@ pTensor pTensor::applyGradient(pTensor matrixOfWeights, pTensor vectorGradients)
 
     lbcrypto::Plaintext pt;
     int index = 0;
-    int ringDim = (*m_cc)->GetRingDimension();
-    int rot = int(-ringDim / 4) + 1;
 
     for (auto &row: maskedGradients.m_ciphertexts) {
         auto maskedVal = row;
         for (int i = 0; i < (index + 1); ++i) {
             maskedVal = (*m_cc)->EvalAtIndex(maskedVal, 1);
         }
-        maskedVal = (*m_cc)->EvalSum(maskedVal, -rot);
-        maskedVal = (*m_cc)->EvalAtIndex(maskedVal, rot);
+        maskedVal = (*m_cc)->EvalSum(maskedVal, -getRepeatBatchSize());
+        maskedVal = (*m_cc)->EvalAtIndex(maskedVal, getRepeatBatchSize());
         tensorCipherContainer.emplace_back(maskedVal);
         index += 1;
     }

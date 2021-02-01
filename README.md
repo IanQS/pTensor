@@ -50,3 +50,7 @@ a [numpy-like](https://numpy.org/) interface for use in encrypted machine learni
 - vstack
   - re: expensive transpose, we do a hstack on the transpose to get the resulting transpose without actually doing the
     entire thing
+
+# Trivia
+
+This library is pronounced Tensor as the "p" is silent.

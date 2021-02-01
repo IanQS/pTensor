@@ -512,6 +512,28 @@ class pTensor {
       return newTensor;
   }
 
+  /**
+   * Get the batch size for repetition of elements. The value of interest must be in the -1-th index slot (they wrap around). We
+   *    effectively sum which is a cumulative sum. Now, only the last batchSize values are the values of interest so we then
+   *    rotate the entire cipher around
+   *
+   * For the summation, we use the negative of this value
+   * For the rotation, we use the actual value
+   * @return
+   */
+  static int getRepeatBatchSize() {
+      int ringDim = (*m_cc)->GetRingDimension();
+      return int(-ringDim / 4) + 1;
+  };
+
+  /**
+   * Used for non-repeat sums and or inner products
+   * @return
+   */
+  static int getBatchSize() {
+      return int((*m_cc)->GetRingDimension() / 4);
+  }
+
  private:
 
   /**

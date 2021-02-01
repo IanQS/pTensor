@@ -71,8 +71,8 @@ int main() {
     // If numFolds ==1, we shuffle the single dataset
     // If numFolds == 0, we keep the order
     int numFolds = 0;
-    float _alpha = 0.075;
-    float _l2_regularization_factor = 0.25;
+    float _alpha = 0.5;
+    float _l2_regularization_factor = -1;
 
     uint8_t multDepth = 8;
     uint8_t scalingFactorBits = 45;
