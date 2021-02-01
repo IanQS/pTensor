@@ -26,7 +26,7 @@
  * @param ptxtY
  * @return
  */
-providedDataset constructDataset(int numFolds, messageTensor ptxtX, messageTensor ptxtY){
+providedDataset constructDataset(int numFolds, messageTensor ptxtX, messageTensor ptxtY) {
 
     auto numObservations = ptxtX.size();
     auto numFeatures = ptxtX[0].size();
@@ -43,7 +43,7 @@ providedDataset constructDataset(int numFolds, messageTensor ptxtX, messageTenso
     auto ptxtX_T = pTensor::plainT(ptxtX);
     auto ptxtY_T = pTensor::plainT(ptxtY);
     pTensor pX(numFeatures, numObservations, ptxtX_T);
-    pTensor pY(1, numObservations, ptxtY);
+    pTensor pY(1, numObservations, ptxtY_T);
 
     auto t1 = std::chrono::high_resolution_clock::now();
     auto X = pX.encrypt();
@@ -66,12 +66,16 @@ int main() {
     //  - We discuss the crypto hyperparameters in the next post
     /////////////////////////////////////////////////////////////////
     unsigned int epochs = 50;
-    int numFolds = 2;  // If 0, we just run GD on entire dataset in same order every epoch
-    float _alpha = 0.01;
-    messageTensor alpha = {{_alpha}};
+
+    // If numFolds > 1, we generate that many shuffles
+    // If numFolds ==1, we shuffle the single dataset
+    // If numFolds == 0, we keep the order
+    int numFolds = 0;
+    float _alpha = 0.06;
+    float _l2_regularization_factor = -1;
 
     uint8_t multDepth = 7;
-    uint8_t scalingFactorBits = 40;
+    uint8_t scalingFactorBits = 50;
     int batchSize = 8192;
 
     /**
@@ -95,6 +99,7 @@ int main() {
 
     auto numObservations = ptxtX.size();
     auto numFeatures = ptxtX[0].size();
+    messageTensor _scaleByNumSamples = {{numObservations}};
 
     /////////////////////////////////////////////////////////////////
     // Create the crypto parameters
@@ -137,10 +142,16 @@ int main() {
     pTensor::m_private_key = private_key;
     pTensor::m_public_key = public_key;
 
-    pTensor weights = pTensor::generateWeights(numFeatures, numObservations);
+    messageTensor _fixed_weights = {
+        {-0.121966},
+        {-1.08682},
+        {0.68429},
+        {-1.07519},
+        {0.0332695}
+    };
+    pTensor weights = pTensor::generateWeights(numFeatures, numObservations, _fixed_weights);
 
     auto t3 = std::chrono::high_resolution_clock::now();
-    auto w = weights.encrypt();
     auto t4 = std::chrono::high_resolution_clock::now();
     duration = std::chrono::duration_cast<std::chrono::microseconds>(t4 - t3).count();
     std::cout << "Encrypting the weights took " << duration * 1e-6 << " seconds" << std::endl;
@@ -156,10 +167,17 @@ int main() {
 
     std::uniform_int_distribution<std::mt19937::result_type> distr(range_from, range_to);
 
-    pTensor pTensorAlpha(1, 1, alpha);
-    pTensorAlpha = pTensorAlpha.encrypt();
+    /////////////////////////////////////////////////////////////////
+    //Encrypt hyperparams
+    // alpha, L2, scaledSamples
+    /////////////////////////////////////////////////////////////////
+    auto alpha = pTensor::encryptScalar(_alpha, true);
+    auto l2Scale = pTensor::encryptScalar(_l2_regularization_factor, true);
+    auto scaleByNumSamples = pTensor::encryptScalar(1 / numObservations, true);
 
+    auto w = weights.encrypt();
 
+    messageTensor debug;
     std::cout << "Beginning training" << std::endl;
     for (unsigned int epoch = 0; epoch < epochs; ++epoch) {
         auto index = distr(generator);
@@ -167,13 +185,26 @@ int main() {
         auto X = std::get<0>(curr_dataset);
         auto y = std::get<1>(curr_dataset);
 
-        auto residual = X.dot(w)- y;// Remember, our X is already a transpose
-        auto gradient = X.dot(residual);
+        auto prediction = X.encryptedDot(w);  // Verified
+        auto residual = y - prediction;// Remember, our X is already a transpose
+        debug = residual.decrypt().getMessage();
+        auto _gradient = X.encryptedDot(residual);
+        debug = _gradient.decrypt().getMessage();
+        pTensor gradient;
+        // We consider the penalized linear regression but our reporting does not take the penalty into account
+        if (_l2_regularization_factor > 0) {
+            auto summedW = w.sum();
+            auto scaledSummedW = l2Scale * summedW;
+            gradient = _gradient + scaledSummedW;
+        } else {
+            gradient = _gradient;
+        }
 
-        auto scaledGradient = pTensorAlpha * w;
+        auto scaledGradient = gradient * alpha * scaleByNumSamples;
 
-        w = w - scaledGradient;
+        w = pTensor::applyGradient(w, scaledGradient);
         w = w.decrypt().encrypt();
+        debug = w.decrypt().getMessage();
 
         /**
          * Note: we have taken 2 liberties here
@@ -185,13 +216,13 @@ int main() {
          *      the efficacy of encrypted ML.
          */
         auto decryptedResidual = residual.decrypt();
-        double squaredLoss = 0;
-        for (auto &vector: decryptedResidual.getMessage()){
-            for (auto &scalar: vector){
-                squaredLoss += (scalar.real() * scalar.real());
+        double squaredResiduals = 0;
+        for (auto &vector: decryptedResidual.getMessage()) {
+            for (auto &scalar: vector) {
+                squaredResiduals += (scalar.real() * scalar.real());
             }
         }
-        std::cout << "Loss at epoch " << epoch << ": " << squaredLoss / numObservations << std::endl;
+        std::cout << "Sq-Residuals at epoch " << epoch << ": " << squaredResiduals / numObservations << std::endl;
     }
     std::cout << "Done" << std::endl;
 }

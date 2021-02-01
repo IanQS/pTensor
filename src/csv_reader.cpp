@@ -10,19 +10,32 @@ messageTensor readFeatures(const std::string &dataFile, bool addBias) {
 
     bool passedLabels = false;
     std::string row;
+    int rowCount = 0;
     if (file.is_open()) {
         while (std::getline(file, row)) {
             if (!passedLabels) {
                 passedLabels = true;
                 continue;
             }
+
+            if (rowCount > 2) {
+                break;
+            }
+            rowCount += 1;
+
+
             std::istringstream ss(row);
             messageVector vectorContainer;
             std::string scalar;
             if (addBias){
                 vectorContainer.emplace_back(1.0, 0.0);
             }
+            int count = 0;
             while (std::getline(ss, scalar, ',')) {
+                if (count > 3){
+                    break;
+                }
+                count += 1;
                 vectorContainer.emplace_back(
                     std::stod(scalar), // the real portion
                     0.0  // the complex portion
@@ -41,11 +54,18 @@ messageTensor readLabels(const std::string &dataFile) {
     std::string label;
     bool passedLabel = false;
     if (file.is_open()) {
+        int rowCount = 0;
         while (std::getline(file, label)) {
             if (!passedLabel) {
                 passedLabel = true;
                 continue;
             }
+
+            if (rowCount > 2) {
+                break;
+            }
+            rowCount += 1;
+
             messageVector vectorContainer;
             vectorContainer.emplace_back(std::stod(label), 0.0);
             container.emplace_back(vectorContainer);

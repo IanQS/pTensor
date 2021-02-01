@@ -25,6 +25,12 @@
 #ifndef PTENSOR_P_TENSOR_H
 #define PTENSOR_P_TENSOR_H
 
+#include <stdexcept>
+class NotImplementedException : public std::logic_error {
+ public:
+  NotImplementedException() : std::logic_error{"Function not yet implemented."} {}
+};
+
 #include "palisade.h"
 #include <tuple>
 #include <iostream>
@@ -81,7 +87,6 @@ class pTensor {
       m_cols(cols),
       m_isEncrypted(true),
       m_ciphertexts(cTensor),
-      m_TCiphertexts(cTensorTranspose),
       m_isRepeated(isRepeated) {
       if (isRepeated) { // Can only be repeated if scalar value
           assert(rows == cols && cols == 1);
@@ -264,19 +269,26 @@ class pTensor {
   pTensor operator*(messageScalar &other);
 
   /**
-   * Dot product only tested between vector-vector and matrix-vector. We let the user choose between a
-   *    row vector or a col-vector
-   *
-   * Note: a col-vector is returned as a matrix. where only the first entry of each row is of interest.
-   *    This is equivalent to the row-vector version.
-   *
-   * Some #precomputation happens here that can be eventually disabled.
+   * A dot product corresponding to how one normally thinks about a dot product
+   *    Mimics the interface from numpy
    *
    * @param other
    * @return
    */
   pTensor dot(pTensor &other, bool asRowVector = true);  // dot prod
 
+  /**
+   * Encrypted dot product:
+   *    Made to work on column-encrypted matrices (where we transpose then encrypt row-wise)
+   *
+   *    Has 2 modes:
+   *        2 matrices of the same shape: first does a hadamard then a sum. Used for weights and data
+   *        Matrix-vector: Given the residuals, update the gradient accordingly
+   * @param other
+   * @param asRowVector
+   * @return
+   */
+  pTensor encryptedDot(pTensor &other);  // dot prod
   /**
    * Reduce along both axes. Basically sum up all the elements
    *    Some #precomputation happens here that can be eventually disabled.
@@ -461,6 +473,62 @@ class pTensor {
       return (!isVector() && !isScalar());
   }
 
+
+  /**
+   * Extract the diagonal from a matrix
+   * @param matrix
+   *    Matrix of shape (m, n) (not necessarily a square matrix)
+   * @param asRowVector
+   *    Whether to return as a rowVector or as a col Vector
+   * @return
+   *    The diagonal elements as a vector
+   */
+  static pTensor getDiagonal(const pTensor& matrix, bool asRowVector);
+
+  /**
+   * Make a matrix where the diagonals are elements of the vector
+   * @param vector
+   *    Vector of (1, numElems)
+   * @return
+   *    Return a matrix where the diagonals are populated by the vector's elements
+   */
+  static pTensor makeDiagonal(pTensor vector);
+
+  /**
+   * Apply the gradients to the weights. The weights are a matrix so we need to consider that while doing the application
+   * as our usual broadcasting doesn't work
+   * @param matrixOfWeights
+   *    Current weights of shape: #features, #observations
+   * @param vectorGradients
+   *    Gradient to apply: 1, #features
+   * @return
+   *    new REPEATED weights of shape #features, #observations
+   */
+  static pTensor applyGradient(pTensor matrixOfWeights, pTensor vectorGradients);
+
+  /**
+   * Utility function to go from a scalar directly to a pTensor
+   * @tparam numericalScalar
+   *    Type of double, float, int, ....
+   * @param value
+   *    The actual value
+   * @return
+   */
+  template<class numericalScalar>
+  static pTensor encryptScalar(numericalScalar value, bool encrypt=false) {
+      messageVector asVector = {value};
+      cipherVector container = (*m_cc)->Encrypt(
+          m_public_key,
+          (*m_cc)->MakeCKKSPackedPlaintext(asVector)
+      );
+      cipherTensor tensorContainer = {container};
+      pTensor newTensor = pTensor(1, 1, tensorContainer);
+      if (encrypt){
+          return newTensor.encrypt();
+      }
+      return newTensor;
+  }
+
  private:
 
   /**
@@ -498,12 +566,13 @@ class pTensor {
    */
   cipherVector applyBinaryOp(const char *opFlag, const cipherVector &a1, const lbcrypto::Plaintext &a2) const;
 
+
+
   unsigned int m_rows = 0;
   unsigned int m_cols = 0;
   bool m_isEncrypted = false;  // Default unencrypted unless arg is passed in
   messageTensor m_messages;
   cipherTensor m_ciphertexts;
-  cipherTensor m_TCiphertexts; // the encrypted transpose.
   bool m_isRepeated = false;  // Only used for scalar stuff. We record if they have been repeated (into a vector)
 
 };
