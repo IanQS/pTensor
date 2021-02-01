@@ -71,12 +71,12 @@ int main() {
     // If numFolds ==1, we shuffle the single dataset
     // If numFolds == 0, we keep the order
     int numFolds = 0;
-    float _alpha = 0.06;
-    float _l2_regularization_factor = -1;
+    float _alpha = 0.075;
+    float _l2_regularization_factor = 0.25;
 
-    uint8_t multDepth = 7;
-    uint8_t scalingFactorBits = 50;
-    int batchSize = 8192;
+    uint8_t multDepth = 8;
+    uint8_t scalingFactorBits = 45;
+    int batchSize = 16384;
 
     /**
      * If you are getting a "evalIndexKey not valid", up the batch size to fit the multDepth based on this:
@@ -122,7 +122,8 @@ int main() {
     int ringDim = cc->GetRingDimension();
 
     if (batchSize!= ringDim / 2){
-        std::cout << "error, adjust batchsize to be ring_dimension/2" << std::endl;
+        std::string eMsg = "error, adjust batchsize to be ring_dimension/2. Batch Size is " + std::to_string(batchSize) + " and ring_dimension / 2 is " + std::to_string(ringDim/2);
+        throw std::runtime_error(eMsg);
     }
     int rot = int(-ringDim / 4) + 1;
     cc->EvalAtIndexKeyGen(keys.secretKey, {-1, 1, rot});
@@ -149,14 +150,8 @@ int main() {
     pTensor::m_private_key = private_key;
     pTensor::m_public_key = public_key;
 
-    messageTensor _fixed_weights = {
-        {-0.121966},
-        {-1.08682},
-        {0.68429},
-        {-1.07519},
-        {0.0332695}
-    };
-    pTensor weights = pTensor::generateWeights(numFeatures, numObservations, _fixed_weights);
+
+    pTensor weights = pTensor::generateWeights(numFeatures, numObservations);
 
     auto t3 = std::chrono::high_resolution_clock::now();
     auto t4 = std::chrono::high_resolution_clock::now();
@@ -184,7 +179,6 @@ int main() {
 
     auto w = weights.encrypt();
 
-    messageTensor debug;
     std::cout << "Beginning training" << std::endl;
     for (unsigned int epoch = 0; epoch < epochs; ++epoch) {
         auto index = distr(generator);
@@ -193,13 +187,14 @@ int main() {
         auto y = std::get<1>(curr_dataset);
 
         auto prediction = X.encryptedDot(w);  // Verified
-        auto residual = y - prediction;// Remember, our X is already a transpose
-        debug = residual.decrypt().getMessage();
+        auto residual = prediction - y;// Remember, our X is already a transpose
         auto _gradient = X.encryptedDot(residual);
-        debug = _gradient.decrypt().getMessage();
         pTensor gradient;
-        // We consider the penalized linear regression but our reporting does not take the penalty into account
+
+
         if (_l2_regularization_factor > 0) {
+            throw std::runtime_error("L2 regularization not supported yet. Change _l2_regularization_factor to be less than 0");
+            // We consider the penalized linear regression but our reporting does not take the penalty into account
             auto summedW = w.sum();
             auto scaledSummedW = l2Scale * summedW;
             gradient = _gradient + scaledSummedW;
@@ -211,7 +206,6 @@ int main() {
 
         w = pTensor::applyGradient(w, scaledGradient);
         w = w.decrypt().encrypt();
-        debug = w.decrypt().getMessage();
 
         /**
          * Note: we have taken 2 liberties here

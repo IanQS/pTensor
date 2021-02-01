@@ -298,8 +298,14 @@ pTensor pTensor::dot(pTensor &other, bool asRowVector) {
 pTensor pTensor::sum() {
 
     assert (m_cc != nullptr && (cipherNotEmpty()));
-    auto colSummedpTensor =    //We now have values summed across the rows.
-        sum(1);  // The first el is of interest. We then sum downwards
+    auto colSummedpTensor = sum(1);  // Now a col Vector but m_cols times larger
+
+    if (m_isRepeated){
+        float _scale = 1.0 / m_cols;
+        auto scale = pTensor::encryptScalar(_scale, true);
+        colSummedpTensor = colSummedpTensor * scale;
+    }
+
     messageVector message_accumulator(1, 0.0); // we initialize to 0
 
     // Accumulator is a vector
@@ -501,10 +507,10 @@ pTensor pTensor::generateWeights(unsigned int numFeatures,
     } else {
         pTensor container;
         if (randomInitializer == "uniform") {
-            container = randomUniform(numFeatures, 1);
+            container = randomUniform(numFeatures, numRepeats);
 
         } else if (randomInitializer == "normal") {
-            container = randomNormal(numFeatures, 1);
+            container = randomNormal(numFeatures, numRepeats);
 
         } else {
             std::string errMsg = "Given unrecognized randomInitializer distribution: " + randomInitializer;
@@ -542,40 +548,6 @@ pTensor pTensor::encryptedDot(pTensor &other) {
     return dot(other);
 }
 
-pTensor pTensor::getDiagonal(const pTensor &matrix, bool asRowVector) {
-    throw NotImplementedException();
-    assert (matrix.isMatrix());
-    if (asRowVector) {
-        // We mask out all but the row of interest then accumulate into a row vector
-        messageVector _container(matrix.m_cols, 0);
-        cipherVector vectorContainer = (*m_cc)->Encrypt(
-            m_public_key,
-            (*m_cc)->MakeCKKSPackedPlaintext(_container));
-
-        int diagIndex = 0;
-        for (auto &v: matrix.m_ciphertexts) {
-            messageVector mask(matrix.m_cols, 0);
-            mask[diagIndex] = 1;
-            auto ptMask = (*m_cc)->MakeCKKSPackedPlaintext(mask);
-            auto maskedVal = (*m_cc)->EvalMult(v, ptMask);
-            vectorContainer = (*m_cc)->EvalAdd(vectorContainer, maskedVal);
-        }
-        cipherTensor matrixContainer = {vectorContainer};
-        pTensor newTensor(1, matrix.m_cols, matrixContainer);
-        newTensor.m_isEncrypted = true;
-        return newTensor;
-    }
-    return pTensor();
-}
-pTensor pTensor::makeDiagonal(pTensor vector) {
-    throw NotImplementedException();
-    assert (vector.isVector());
-    pTensor identity = pTensor::identity(vector.m_rows);
-    auto eIdentity = identity.encrypt();
-
-    return eIdentity * vector;  // Hadamard
-}
-
 pTensor pTensor::applyGradient(pTensor matrixOfWeights, pTensor vectorGradients) {
     // matrixOfWeights shape: (# features, #observations), a repeated matrix essentially having shape (#features, 1)
     // vectorGradients shape: (1, #features)
@@ -589,7 +561,7 @@ pTensor pTensor::applyGradient(pTensor matrixOfWeights, pTensor vectorGradients)
     auto maskedGradients = encryptedIdentity * vectorGradients;
 
     lbcrypto::Plaintext pt;
-    int index=0;
+    int index = 0;
     int ringDim = (*m_cc)->GetRingDimension();
     int rot = int(-ringDim / 4) + 1;
 
@@ -600,23 +572,14 @@ pTensor pTensor::applyGradient(pTensor matrixOfWeights, pTensor vectorGradients)
         }
         maskedVal = (*m_cc)->EvalSum(maskedVal, -rot);
         maskedVal = (*m_cc)->EvalAtIndex(maskedVal, rot);
-
-        (*m_cc)->Decrypt(m_private_key, maskedVal, &pt);
-        pt->SetLength(10);
-        pt->GetCKKSPackedValue();
-        std::cout << pt << std::endl;
-
         tensorCipherContainer.emplace_back(maskedVal);
         index += 1;
-        std::cout << "****************" << std::endl;
     }
 
     // MatrixGradients is a repeated matrix
     pTensor matrixGradients(matrixOfWeights.m_rows, matrixOfWeights.m_cols, tensorCipherContainer);
 
-    messageTensor debug;
     auto toReturn = matrixOfWeights - matrixGradients;
 
-    debug = toReturn.decrypt().getMessage();
     return toReturn;
 }

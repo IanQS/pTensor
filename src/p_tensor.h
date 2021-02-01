@@ -475,26 +475,6 @@ class pTensor {
 
 
   /**
-   * Extract the diagonal from a matrix
-   * @param matrix
-   *    Matrix of shape (m, n) (not necessarily a square matrix)
-   * @param asRowVector
-   *    Whether to return as a rowVector or as a col Vector
-   * @return
-   *    The diagonal elements as a vector
-   */
-  static pTensor getDiagonal(const pTensor& matrix, bool asRowVector);
-
-  /**
-   * Make a matrix where the diagonals are elements of the vector
-   * @param vector
-   *    Vector of (1, numElems)
-   * @return
-   *    Return a matrix where the diagonals are populated by the vector's elements
-   */
-  static pTensor makeDiagonal(pTensor vector);
-
-  /**
    * Apply the gradients to the weights. The weights are a matrix so we need to consider that while doing the application
    * as our usual broadcasting doesn't work
    * @param matrixOfWeights
