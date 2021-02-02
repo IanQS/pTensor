@@ -9,6 +9,8 @@
  *
  *  The first 2 steps would occur on the private data lake and the second one would be on
  *      a machine that the modeler owns
+ *
+ *  Readers are encouraged to follow along with https://ianq.ai/pTensor-and-palisade/
  */
 
 #include "src/p_tensor.h"
@@ -18,9 +20,8 @@
 
 /**
  * We construct the dataset into a vector of size num-folds
-    // @NOTE: explain why we have to generate the folds before encrypting
-    // @Note, we encrypt row-wise and encryption is slow, so we want to encrypt across rows.
-    // Thus, we take the transpose of ptxtX.
+ *  Refer to the blog post for motivation behind this decision
+ *  https://ianq.ai/pTensor-and-palisade/
  * @param numFolds
  * @param ptxtX
  * @param ptxtY
@@ -110,8 +111,7 @@ int main() {
         multDepth, scalingFactorBits, batchSize
     );
 
-    // @Note, we discuss this in the next blog post
-
+    // @Note, we discuss the following in the next blog post
     cc->Enable(ENCRYPTION);
     cc->Enable(SHE);
     cc->Enable(LEVELEDSHE);
