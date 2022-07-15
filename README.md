@@ -1,8 +1,13 @@
 # pTensor
 
-pTensor is a wrapper around the [PALISADE](https://gitlab.com/palisade/palisade-development) library, which is a
-general-purpose lattice cryptography library. pTensor composes relevant functions from PALISADE to create
+pTensor is a wrapper around the [OpenFHE](git@github.com:openfheorg/openfhe-development.git), which is a
+general-purpose lattice cryptography library. The original name, `pTensor`, was because this was a wrapper 
+around the [PALISADE](https://gitlab.com/palisade/palisade-development) library. `pTensor` composes relevant functions from PALISADE to create
 a [numpy-like](https://numpy.org/) interface for use in encrypted machine learning.
+
+# Caveats
+
+Although I am affiliated with `Duality`, this product is NOT. In no way is this product their responsibility and any complaints should be directed to me at [ptensor@iq.anonaddy.me](mailto:ptensor@iq.anonaddy.me)
 
 ## Features
 

@@ -5,8 +5,8 @@
 #include "p_tensor.h"
 
 lbcrypto::CryptoContext<lbcrypto::DCRTPoly> *pTensor::m_cc = nullptr;
-shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> pTensor::m_public_key = nullptr;
-shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> pTensor::m_private_key = nullptr;
+std::shared_ptr<lbcrypto::PublicKeyImpl<lbcrypto::DCRTPoly>> pTensor::m_public_key = nullptr;
+std::shared_ptr<lbcrypto::PrivateKeyImpl<lbcrypto::DCRTPoly>> pTensor::m_private_key = nullptr;
 
 pTensor pTensor::encrypt() {
     assert(messageNotEmpty() && m_public_key != nullptr && m_cc != nullptr);

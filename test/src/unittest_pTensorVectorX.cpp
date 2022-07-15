@@ -7,15 +7,16 @@
 #include "gtest/gtest.h"
 #include "../../src/p_tensor.h"
 #include "pTensorUtils_testing.h"
-#include "palisade.h"
 
+#include "gen-cryptocontext.h"
+#include "scheme/ckksrns/cryptocontext-ckksrns.h"
 class pTensor_VectorTest : public ::testing::Test {
 
  protected:
   lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc;
 
-  shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> public_key;
-  shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> private_key;
+  std::shared_ptr<lbcrypto::PublicKeyImpl<lbcrypto::DCRTPoly>> public_key;
+  std::shared_ptr<lbcrypto::PrivateKeyImpl<lbcrypto::DCRTPoly>> private_key;
 
   /////////////////////////////////////////////////////////////////
   //Initialize from complex values
@@ -33,14 +34,16 @@ class pTensor_VectorTest : public ::testing::Test {
       uint8_t scalingFactorBits = 40;
       int batchSize = 4096;
 
-      cc =
-          lbcrypto::CryptoContextFactory<lbcrypto::DCRTPoly>::genCryptoContextCKKS(
-              multDepth, scalingFactorBits, batchSize
-          );
+      lbcrypto::CCParams<lbcrypto::CryptoContextCKKSRNS> parameters;
+      parameters.SetMultiplicativeDepth(multDepth);
+      parameters.SetScalingFactorBits(scalingFactorBits);
+      parameters.SetBatchSize(batchSize);
 
-      cc->Enable(ENCRYPTION);
-      cc->Enable(SHE);
+      cc = GenCryptoContext(parameters);
+
+      cc->Enable(PKE);
       cc->Enable(LEVELEDSHE);
+
       auto keys = cc->KeyGen();
       cc->EvalMultKeyGen(keys.secretKey);
       cc->EvalSumKeyGen(keys.secretKey);
@@ -60,7 +63,6 @@ class pTensor_VectorTest : public ::testing::Test {
 
   void TearDown() {
       lbcrypto::CryptoContextFactory<lbcrypto::DCRTPoly>::ReleaseAllContexts();
-
       cc->ClearEvalMultKeys();
       cc->ClearEvalAutomorphismKeys();
       cc = nullptr;

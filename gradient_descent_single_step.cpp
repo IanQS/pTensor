@@ -40,15 +40,17 @@ int main() {
     uint8_t scalingFactorBits = 40;
     int batchSize = 4096;
 
-    auto cc =
-        lbcrypto::CryptoContextFactory<lbcrypto::DCRTPoly>::genCryptoContextCKKS(
-            multDepth, scalingFactorBits, batchSize
-        );
+    lbcrypto::CCParams<lbcrypto::CryptoContextCKKSRNS> parameters;
+    parameters.SetMultiplicativeDepth(multDepth);
+    parameters.SetScalingFactorBits(scalingFactorBits);
+    parameters.SetBatchSize(batchSize);
 
-    cc->Enable(ENCRYPTION);
-    cc->Enable(SHE);
+    lbcrypto::CryptoContext<lbcrypto::DCRTPoly> cc = GenCryptoContext(parameters);
+
+    cc->Enable(PKE);
     cc->Enable(LEVELEDSHE);
     auto keys = cc->KeyGen();
+
     cc->EvalMultKeyGen(keys.secretKey);
     cc->EvalSumKeyGen(keys.secretKey);
 
@@ -56,8 +58,8 @@ int main() {
     int rot = int(-ringDim / 4) + 1;
     cc->EvalAtIndexKeyGen(keys.secretKey, {-1, 1, rot});
 
-    shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> public_key;
-    shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> private_key;
+    std::shared_ptr<lbcrypto::PublicKeyImpl<lbcrypto::DCRTPoly>> public_key;
+    std::shared_ptr<lbcrypto::PrivateKeyImpl<lbcrypto::DCRTPoly>> private_key;
     public_key = keys.publicKey;
     private_key = keys.secretKey;
     /////////////////////////////////////////////////////////////////

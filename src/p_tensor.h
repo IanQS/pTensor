@@ -31,7 +31,7 @@ class NotImplementedException : public std::logic_error {
   NotImplementedException() : std::logic_error{"Function not yet implemented."} {}
 };
 
-#include "palisade.h"
+#include "openfhe.h"
 #include <tuple>
 #include <iostream>
 #include <utility>
@@ -41,6 +41,9 @@ class NotImplementedException : public std::logic_error {
 #include "ptensor_utils.h"
 #include <cassert>
 #include <random>
+
+#include "gen-cryptocontext.h"
+#include "scheme/ckksrns/cryptocontext-ckksrns.h"
 
 /**
  * Main Palisade Tensor class
@@ -60,8 +63,8 @@ class pTensor {
  public:
 
   static lbcrypto::CryptoContext<lbcrypto::DCRTPoly> *m_cc;
-  static shared_ptr<lbcrypto::LPPublicKeyImpl<lbcrypto::DCRTPoly>> m_public_key;
-  static shared_ptr<lbcrypto::LPPrivateKeyImpl<lbcrypto::DCRTPoly>> m_private_key;
+  static std::shared_ptr<lbcrypto::PublicKeyImpl<lbcrypto::DCRTPoly>> m_public_key;
+  static std::shared_ptr<lbcrypto::PrivateKeyImpl<lbcrypto::DCRTPoly>> m_private_key;
 
   pTensor() = default;
 
